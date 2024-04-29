@@ -16,9 +16,14 @@ func die(msg string, args ...any) {
 var (
 	numRuns    = flag.Int("n", 5, "number of times to run the command")
 	sequential = flag.Bool("s", false, "whether to invoke the command sequentially")
+	delayMS    = flag.Int("delay-ms", 0, "time to sleep for between runs")
 )
 
 func Execute() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "%s\nFlags:\n", helpText)
+		flag.PrintDefaults()
+	}
 	flag.Parse()
 
 	cmdToRun := flag.Args()
@@ -28,5 +33,5 @@ func Execute() {
 	if *numRuns <= 1 {
 		die("num-runs needs to be atleast 2")
 	}
-	ui.RenderUI(cmdToRun, *numRuns, *sequential)
+	ui.RenderUI(cmdToRun, *numRuns, *sequential, *delayMS)
 }

@@ -6,6 +6,7 @@ type runStatus uint
 
 const (
 	running runStatus = iota
+	waiting
 	scheduled
 	finished
 )
@@ -25,6 +26,8 @@ func (c command) Title() string {
 func (c command) Description() string {
 	var runIndicator string
 	switch c.RunStatus {
+	case waiting:
+		runIndicator = cmdWaitingStyle.Render("waiting")
 	case scheduled:
 		runIndicator = cmdScheduledStyle.Render("scheduled")
 	case running:

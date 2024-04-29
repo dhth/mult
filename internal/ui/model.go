@@ -33,6 +33,9 @@ type model struct {
 	lastPane         Pane
 	firstFetch       bool
 	sequential       bool
+	delayMS          int
+	numRunsFinished  int
+	numErrors        int
 }
 
 func (m model) Init() tea.Cmd {

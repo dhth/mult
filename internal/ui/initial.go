@@ -5,7 +5,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func InitialModel(cmd []string, numRuns int, sequential bool) model {
+func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int) model {
 
 	stackItems := make([]list.Item, 0)
 
@@ -54,6 +54,7 @@ func InitialModel(cmd []string, numRuns int, sequential bool) model {
 		showHelp:         true,
 		firstFetch:       true,
 		sequential:       sequential,
+		delayMS:          delayMS,
 	}
 
 	m.runList.Title = "Runs"

@@ -25,11 +25,20 @@ func (m model) View() string {
 
 	var helpMsg string
 	if m.showHelp {
-		helpMsg = " " + helpMsgStyle.Render("tab: switch focus; j/k/down/up: scroll output up/down")
+		helpMsg = helpMsgStyle.Render("tab: switch focus; j/k/down/up: scroll output up/down")
 	}
 
-	footerStr := fmt.Sprintf("%s%s",
+	numRunsMsg := numRunsStyle.Render(fmt.Sprintf("%d/%d", m.numRunsFinished, m.numRuns))
+
+	var numErrorsMsg string
+	if m.numErrors > 0 {
+		numErrorsMsg = numErrorsStyle.Render(fmt.Sprintf("%d errors", m.numErrors))
+	}
+
+	footerStr := fmt.Sprintf("%s%s%s%s",
 		modeStyle.Render("mult"),
+		numRunsMsg,
+		numErrorsMsg,
 		helpMsg,
 	)
 	footer = footerStyle.Render(footerStr)

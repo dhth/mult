@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"time"
+
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -15,7 +17,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
-			return m, tea.Quit
+			switch m.activePane {
+			case outputPane:
+				m.activePane = cmdRunListPane
+				m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
+				m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
+			default:
+				return m, tea.Quit
+			}
 		case "tab", "shift+tab":
 			if m.activePane == cmdRunListPane {
 				m.activePane = outputPane
@@ -47,6 +56,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case CmdRanMsg:
+		m.numRunsFinished++
 		i := msg.iterationNum
 		run, ok := m.runList.Items()[i].(command)
 		if ok {
@@ -58,6 +68,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			if msg.err != nil {
 				m.resultsCache[i] = msg.err.Error()
+				m.numErrors++
 			} else {
 				m.resultsCache[i] = run.Output
 			}
@@ -76,15 +87,31 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if m.sequential {
 			if i < m.numRuns-1 {
-
-				nextRun, ok := m.runList.Items()[i+1].(command)
-				if ok {
-					nextRun.RunStatus = running
-					cmds = append(cmds, m.runList.SetItem(i+1, nextRun))
+				if m.delayMS == 0 {
+					nextRun, ok := m.runList.Items()[i+1].(command)
+					if ok {
+						nextRun.RunStatus = running
+						cmds = append(cmds, m.runList.SetItem(i+1, nextRun))
+						cmds = append(cmds, runCmd(m.cmd, i+1))
+					}
+				} else {
+					nextRun, ok := m.runList.Items()[i+1].(command)
+					if ok {
+						nextRun.RunStatus = waiting
+						cmds = append(cmds, m.runList.SetItem(i+1, nextRun))
+						cmds = append(cmds, runAfterDelay(time.Millisecond*time.Duration(m.delayMS), i+1))
+					}
 				}
-				cmds = append(cmds, runCmd(m.cmd, i+1))
 			}
 		}
+	case DelayTimeElapsedMsg:
+		run, ok := m.runList.Items()[msg.iterationNum].(command)
+		if ok {
+			run.RunStatus = running
+			cmds = append(cmds, m.runList.SetItem(msg.iterationNum, run))
+			cmds = append(cmds, runCmd(m.cmd, msg.iterationNum))
+		}
+
 	case CmdRunChosenMsg:
 		resultFromCache, ok := m.resultsCache[msg.runNum]
 		if ok {

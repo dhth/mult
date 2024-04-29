@@ -6,8 +6,9 @@ import (
 
 const (
 	defaultBackgroundColor = "#282828"
-	cmdScheduledColor      = "#83a598"
-	cmdRunningColor        = "#fabd2f"
+	cmdWaitingColor        = "#fabd2f"
+	cmdScheduledColor      = "#928374"
+	cmdRunningColor        = "#83a598"
 	cmdRanColor            = "#b8bb26"
 	cmdErrorColor          = "#fb4934"
 	cmdRunListColor        = "#b8bb26"
@@ -20,6 +21,7 @@ const (
 	helpViewTitleColor     = "#83a598"
 	helpHeaderColor        = "#83a598"
 	helpSectionColor       = "#fabd2f"
+	numErrorsColor         = "#fb4934"
 )
 
 var (
@@ -36,6 +38,9 @@ var (
 	cmdIndicatorStyle = lipgloss.NewStyle().
 				Bold(true)
 
+	cmdWaitingStyle = cmdIndicatorStyle.Copy().
+			Foreground(lipgloss.Color(cmdWaitingColor))
+
 	cmdScheduledStyle = cmdIndicatorStyle.Copy().
 				Foreground(lipgloss.Color(cmdScheduledColor))
 
@@ -48,9 +53,20 @@ var (
 	cmdErrorStyle = cmdIndicatorStyle.Copy().
 			Foreground(lipgloss.Color(cmdErrorColor))
 
-	helpMsgStyle = baseStyle.Copy().
+	helpMsgStyle = lipgloss.NewStyle().
+			PaddingLeft(2).
 			Bold(true).
 			Foreground(lipgloss.Color("#83a598"))
+
+	numRunsStyle = lipgloss.NewStyle().
+			PaddingLeft(2).
+			Bold(true).
+			Foreground(lipgloss.Color(cmdScheduledColor))
+
+	numErrorsStyle = lipgloss.NewStyle().
+			PaddingLeft(2).
+			Bold(true).
+			Foreground(lipgloss.Color(numErrorsColor))
 
 	inActivePaneHeaderStyle = baseStyle.Copy().
 				Align(lipgloss.Left).

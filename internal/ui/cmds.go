@@ -19,6 +19,12 @@ func hideHelp(interval time.Duration) tea.Cmd {
 	})
 }
 
+func runAfterDelay(interval time.Duration, iterationNum int) tea.Cmd {
+	return tea.Tick(interval, func(time.Time) tea.Msg {
+		return DelayTimeElapsedMsg{iterationNum}
+	})
+}
+
 func runCmd(cmd []string, iterationNum int) tea.Cmd {
 	return func() tea.Msg {
 		var c *exec.Cmd

@@ -5,6 +5,10 @@
 
 Run a command multiple times and glance at the outputs.
 
+```bash
+mult command --you=want to run
+```
+
 <p align="center">
   <img src="./assets/mult.png?raw=true" alt="Usage" />
 </p>

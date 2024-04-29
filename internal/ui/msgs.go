@@ -12,3 +12,7 @@ type CmdRanMsg struct {
 	tookMS       int64
 	err          error
 }
+
+type DelayTimeElapsedMsg struct {
+	iterationNum int
+}
