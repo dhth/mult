@@ -1,0 +1,43 @@
+version: 1
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+
+signs:
+  - cmd: cosign
+    stdin: "{{.Env.COSIGN_PASSWORD}}"
+    args:
+      - "sign-blob"
+      - "--key=cosign.key"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - "--yes" # needed on cosign 2.0.0+
+    artifacts: all
+
+
+brews:
+  - name: mult
+    repository:
+      owner: dhth
+      name: homebrew-tap
+    folder: Formula
+    license: MIT
+    homepage: "https://github.com/dhth/mult"
+    description: "Run a command multiple times and glance at the outputs"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
