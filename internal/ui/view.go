@@ -35,10 +35,16 @@ func (m model) View() string {
 		numErrorsMsg = numErrorsStyle.Render(fmt.Sprintf("%d errors", m.numErrors))
 	}
 
-	footerStr := fmt.Sprintf("%s%s%s%s",
+	var abandonedMsg string
+	if m.abandoned {
+		abandonedMsg = abandonedMsgStyle.Render("abandoned")
+	}
+
+	footerStr := fmt.Sprintf("%s%s%s%s%s",
 		modeStyle.Render("mult"),
 		numRunsMsg,
 		numErrorsMsg,
+		abandonedMsg,
 		helpMsg,
 	)
 	footer = footerStyle.Render(footerStr)

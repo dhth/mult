@@ -5,7 +5,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int) model {
+func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFailure bool) model {
 
 	stackItems := make([]list.Item, 0)
 
@@ -55,12 +55,14 @@ func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int) model
 		firstFetch:       true,
 		sequential:       sequential,
 		delayMS:          delayMS,
+		stopOnFirstError: stopOnFailure,
 	}
 
 	m.runList.Title = "Runs"
 	m.runList.SetStatusBarItemName("run", "runs")
 	m.runList.DisableQuitKeybindings()
 	m.runList.SetShowHelp(false)
+	m.runList.SetFilteringEnabled(false)
 	m.runList.Styles.Title.Foreground(lipgloss.Color(defaultBackgroundColor))
 	m.runList.Styles.Title.Background(lipgloss.Color(cmdRunListColor))
 	m.runList.Styles.Title.Bold(true)

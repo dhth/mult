@@ -85,8 +85,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		}
 
-		if m.sequential {
-			if i < m.numRuns-1 {
+		if i < m.numRuns-1 && m.sequential {
+			if m.stopOnFirstError && msg.err != nil {
+				for j := i + 1; j < m.numRuns; j++ {
+					nextRun, ok := m.runList.Items()[i+1].(command)
+					if ok {
+						nextRun.RunStatus = abandoned
+						cmds = append(cmds, m.runList.SetItem(j, nextRun))
+					}
+				}
+				m.abandoned = true
+			} else {
 				if m.delayMS == 0 {
 					nextRun, ok := m.runList.Items()[i+1].(command)
 					if ok {

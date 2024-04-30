@@ -9,6 +9,7 @@ const (
 	waiting
 	scheduled
 	finished
+	abandoned
 )
 
 type command struct {
@@ -32,6 +33,8 @@ func (c command) Description() string {
 		runIndicator = cmdScheduledStyle.Render("scheduled")
 	case running:
 		runIndicator = cmdRunningStyle.Render("running")
+	case abandoned:
+		runIndicator = cmdAbandonedStyle.Render("abandoned")
 	default:
 		if c.Err != nil {
 			runIndicator = cmdErrorStyle.Render("error")

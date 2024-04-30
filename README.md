@@ -30,7 +30,22 @@ go install github.com/dhth/mult@latest
 
 ```bash
 mult \
+    curl -s -i https://httpbin.org/delay/1
+```
+
+### Specify number of runs
+
+```bash
+mult \
     -n=10 \
+    curl -s -i https://httpbin.org/delay/1
+```
+
+### Ask for number of runs
+
+```bash
+mult \
+    -i \
     curl -s -i https://httpbin.org/delay/1
 ```
 
@@ -38,7 +53,26 @@ mult \
 
 ```bash
 mult \
-    -n=10 \
-    -s=true \
+    -s \
     curl -s -i https://httpbin.org/delay/1
 ```
+
+### Add delay (in milliseconds) between runs
+
+```bash
+mult \
+    -s \
+    -delay-ms=500 \
+    curl -s -i https://httpbin.org/delay/1
+```
+
+### Stop at first failure
+
+```bash
+mult \
+    -s \
+    -ff \
+    curl -s -i https://httpbin.org/delay/1
+```
+
+*Note: `-delay-ms`, `-ff` only apply in sequential run mode.*

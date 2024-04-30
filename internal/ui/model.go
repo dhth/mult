@@ -36,6 +36,8 @@ type model struct {
 	delayMS          int
 	numRunsFinished  int
 	numErrors        int
+	stopOnFirstError bool
+	abandoned        bool
 }
 
 func (m model) Init() tea.Cmd {

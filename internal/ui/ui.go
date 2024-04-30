@@ -8,7 +8,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-func RenderUI(cmd []string, numRuns int, sequential bool, delayMS int) {
+func RenderUI(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFailure bool) {
 
 	if len(os.Getenv("DEBUG")) > 0 {
 		f, err := tea.LogToFile("debug.log", "debug")
@@ -18,7 +18,7 @@ func RenderUI(cmd []string, numRuns int, sequential bool, delayMS int) {
 		}
 		defer f.Close()
 	}
-	p := tea.NewProgram(InitialModel(cmd, numRuns, sequential, delayMS), tea.WithAltScreen())
+	p := tea.NewProgram(InitialModel(cmd, numRuns, sequential, delayMS, stopOnFailure), tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		log.Fatalf("Something went wrong %s", err)
 	}

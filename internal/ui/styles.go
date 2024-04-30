@@ -14,6 +14,7 @@ const (
 	cmdRunListColor        = "#b8bb26"
 	cmdDurationColor       = "#928374"
 	cmdRunColor            = "#928374"
+	cmdAbandonedColor      = "#bdae93"
 	activePaneColor        = "#b8bb26"
 	inactivePaneColor      = "#928374"
 	modeColor              = "#b8bb26"
@@ -53,6 +54,9 @@ var (
 	cmdErrorStyle = cmdIndicatorStyle.Copy().
 			Foreground(lipgloss.Color(cmdErrorColor))
 
+	cmdAbandonedStyle = cmdIndicatorStyle.Copy().
+				Foreground(lipgloss.Color(cmdAbandonedColor))
+
 	helpMsgStyle = lipgloss.NewStyle().
 			PaddingLeft(2).
 			Bold(true).
@@ -67,6 +71,11 @@ var (
 			PaddingLeft(2).
 			Bold(true).
 			Foreground(lipgloss.Color(numErrorsColor))
+
+	abandonedMsgStyle = lipgloss.NewStyle().
+				PaddingLeft(2).
+				Bold(true).
+				Foreground(lipgloss.Color(cmdAbandonedColor))
 
 	inActivePaneHeaderStyle = baseStyle.Copy().
 				Align(lipgloss.Left).
