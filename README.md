@@ -10,9 +10,8 @@ mult command --you=want to run
 ```
 
 <p align="center">
-  <img src="./assets/mult.png?raw=true" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/mult/mult.png" alt="Usage" />
 </p>
-
 
 💾 Installation
 ---
@@ -32,6 +31,10 @@ go install github.com/dhth/mult@latest
 mult \
     curl -s -i https://httpbin.org/delay/1
 ```
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/mult/mult-1.gif" alt="Usage" />
+</p>
 
 ### Specify number of runs
 
@@ -57,6 +60,10 @@ mult \
     curl -s -i https://httpbin.org/delay/1
 ```
 
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/mult/mult-2.gif" alt="Usage" />
+</p>
+
 ### Add delay (in milliseconds) between runs
 
 ```bash
@@ -74,5 +81,9 @@ mult \
     -ff \
     curl -s -i https://httpbin.org/delay/1
 ```
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/mult/mult-3.gif" alt="Usage" />
+</p>
 
 *Note: `-delay-ms`, `-ff` only apply in sequential run mode.*
