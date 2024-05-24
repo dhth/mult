@@ -28,6 +28,9 @@ brew install dhth/tap/mult
 go install github.com/dhth/mult@latest
 ```
 
+Or get the binaries directly from a
+[release](https://github.com/dhth/mult/releases).
+
 ⚡️ Usage
 ---
 
