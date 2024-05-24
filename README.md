@@ -16,6 +16,12 @@ mult command --you=want to run
 💾 Installation
 ---
 
+**homebrew**:
+
+```sh
+brew install dhth/tap/mult
+```
+
 **go**:
 
 ```sh

@@ -29,7 +29,7 @@ brews:
     repository:
       owner: dhth
       name: homebrew-tap
-    folder: Formula
+    directory: Formula
     license: MIT
     homepage: "https://github.com/dhth/mult"
     description: "Run a command multiple times and glance at the outputs"
