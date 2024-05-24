@@ -15,6 +15,7 @@ const (
 	cmdDurationColor       = "#928374"
 	cmdRunColor            = "#928374"
 	cmdAbandonedColor      = "#bdae93"
+	cmdErrorDetailsColor   = "#928374"
 	activePaneColor        = "#b8bb26"
 	inactivePaneColor      = "#928374"
 	modeColor              = "#b8bb26"
@@ -56,6 +57,9 @@ var (
 
 	cmdAbandonedStyle = cmdIndicatorStyle.Copy().
 				Foreground(lipgloss.Color(cmdAbandonedColor))
+
+	cmdErrorDetailsStyle = lipgloss.NewStyle().
+				Foreground(lipgloss.Color(cmdErrorDetailsColor))
 
 	helpMsgStyle = lipgloss.NewStyle().
 			PaddingLeft(2).

@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/charmbracelet/bubbles/viewport"
@@ -67,7 +68,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmds = append(cmds, m.runList.SetItem(i, run))
 
 			if msg.err != nil {
-				m.resultsCache[i] = msg.err.Error()
+				errDetails := cmdErrorDetailsStyle.Render(fmt.Sprintf("---\n%s", msg.err.Error()))
+				m.resultsCache[i] = fmt.Sprintf("%s\n%s", run.Output, errDetails)
 				m.numErrors++
 			} else {
 				m.resultsCache[i] = run.Output
