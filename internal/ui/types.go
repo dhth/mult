@@ -36,14 +36,16 @@ func (c command) Description() string {
 	case abandoned:
 		runIndicator = cmdAbandonedStyle.Render("abandoned")
 	default:
+		var exitIndicator string
 		if c.Err != nil {
-			runIndicator = cmdErrorStyle.Render("error")
+			exitIndicator = cmdErrorStyle.Render("errored")
 		} else {
-			runIndicator = fmt.Sprintf("%s %s",
-				cmdRanStyle.Render("finished"),
-				cmdDurationStyle.Render(fmt.Sprintf("in %d ms",
-					c.TookMS)))
+			exitIndicator = cmdRanStyle.Render("finished")
 		}
+		runIndicator = fmt.Sprintf("%s %s",
+			exitIndicator,
+			cmdDurationStyle.Render(fmt.Sprintf("in %d ms",
+				c.TookMS)))
 	}
 	return runIndicator
 }
