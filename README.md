@@ -10,8 +10,17 @@ mult command --you=want to run
 ```
 
 <p align="center">
-  <img src="https://tools.dhruvs.space/images/mult/mult.png" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/mult/mult-usage-1.gif" alt="Usage" />
 </p>
+
+🧰 Use Cases
+---
+
+`mult` can come in handy in a few scenarios, such as:
+
+- Investigating inconsistent responses from a web server
+- Checking the outcomes of a flaky test suite
+- Running quick and dirty performance/stress tests
 
 💾 Installation
 ---
@@ -34,23 +43,12 @@ Or get the binaries directly from a
 ⚡️ Usage
 ---
 
-### Run concurrently
-
-```bash
-mult \
-    curl -s -i https://httpbin.org/delay/1
-```
-
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/mult/mult-1.gif" alt="Usage" />
-</p>
-
 ### Specify number of runs
 
 ```bash
 mult \
     -n=10 \
-    curl -s -i https://httpbin.org/delay/1
+    yourcommand --with=flags --and=args as usual
 ```
 
 ### Ask for number of runs
@@ -58,20 +56,19 @@ mult \
 ```bash
 mult \
     -i \
-    curl -s -i https://httpbin.org/delay/1
+    yourcommand --with=flags --and=args as usual
 ```
 
 ### Run sequentially
 
+By default, `mult` executes all runs concurrently. Use `-s` for sequentially
+execution.
+
 ```bash
 mult \
     -s \
-    curl -s -i https://httpbin.org/delay/1
+    yourcommand --with=flags --and=args as usual
 ```
-
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/mult/mult-2.gif" alt="Usage" />
-</p>
 
 ### Add delay (in milliseconds) between runs
 
@@ -79,7 +76,7 @@ mult \
 mult \
     -s \
     -delay-ms=500 \
-    curl -s -i https://httpbin.org/delay/1
+    yourcommand --with=flags --and=args as usual
 ```
 
 ### Stop at first failure
@@ -88,11 +85,7 @@ mult \
 mult \
     -s \
     -ff \
-    curl -s -i https://httpbin.org/delay/1
+    yourcommand --with=flags --and=args as usual
 ```
-
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/mult/mult-3.gif" alt="Usage" />
-</p>
 
 *Note: `-delay-ms`, `-ff` only apply in sequential run mode.*
