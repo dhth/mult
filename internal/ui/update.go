@@ -21,20 +21,20 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch m.activePane {
 			case outputPane:
 				m.activePane = cmdRunListPane
-				m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
-				m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
+				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
+				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
 			default:
 				return m, tea.Quit
 			}
 		case "tab", "shift+tab":
 			if m.activePane == cmdRunListPane {
 				m.activePane = outputPane
-				m.outputTitleStyle.Background(lipgloss.Color(activePaneColor))
-				m.runList.Styles.Title.Background(lipgloss.Color(inactivePaneColor))
+				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(activePaneColor))
+				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(inactivePaneColor))
 			} else if m.activePane == outputPane {
 				m.activePane = cmdRunListPane
-				m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
-				m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
+				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
+				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
 			}
 		}
 	case HideHelpMsg:
@@ -44,15 +44,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.terminalWidth = msg.Width
 		m.terminalHeight = msg.Height
 		m.runList.SetHeight(msg.Height - h1 - 2)
-		m.runList.SetWidth(int(float64(msg.Width-w1) * 0.3))
-		m.runListStyle.Width(int(float64(msg.Width-w1) * 0.3))
+		m.runList.SetWidth(int(float64(msg.Width)*0.25) - w1 - 2)
+		m.runListStyle = m.runListStyle.Width(int(float64(msg.Width)*0.25) - w1)
 
 		if !m.outputVPReady {
-			m.outputVP = viewport.New(int(float64(msg.Width-w1)*0.6), msg.Height-8)
+			m.outputVP = viewport.New(msg.Width-m.runListStyle.GetWidth()-2, msg.Height-8)
 			m.outputVP.HighPerformanceRendering = false
 			m.outputVPReady = true
 		} else {
-			m.outputVP.Width = int(float64(msg.Width-w1) * 0.6)
+			m.outputVP.Width = msg.Width - m.runListStyle.GetWidth() - 2
 			m.outputVP.Height = msg.Height - 8
 		}
 

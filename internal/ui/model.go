@@ -30,7 +30,6 @@ type model struct {
 	terminalWidth    int
 	showHelp         bool
 	activePane       Pane
-	lastPane         Pane
 	firstFetch       bool
 	sequential       bool
 	delayMS          int

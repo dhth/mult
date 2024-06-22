@@ -34,13 +34,13 @@ func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopO
 		PaddingRight(1).
 		Foreground(lipgloss.Color(defaultBackgroundColor))
 
-	tableListStyle := baseStyle.Copy().
+	tableListStyle := baseStyle.
 		PaddingTop(1).
 		PaddingRight(2).
 		PaddingLeft(1).
 		PaddingBottom(1)
 
-	outputTitleStyle := inActivePaneHeaderStyle.Copy().
+	outputTitleStyle := inActivePaneHeaderStyle.
 		Background(lipgloss.Color(inactivePaneColor))
 
 	m := model{
@@ -63,9 +63,9 @@ func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopO
 	m.runList.DisableQuitKeybindings()
 	m.runList.SetShowHelp(false)
 	m.runList.SetFilteringEnabled(false)
-	m.runList.Styles.Title.Foreground(lipgloss.Color(defaultBackgroundColor))
-	m.runList.Styles.Title.Background(lipgloss.Color(cmdRunListColor))
-	m.runList.Styles.Title.Bold(true)
+	m.runList.Styles.Title = m.runList.Styles.Title.Foreground(lipgloss.Color(defaultBackgroundColor)).
+		Background(lipgloss.Color(cmdRunListColor)).
+		Bold(true)
 
 	return m
 }

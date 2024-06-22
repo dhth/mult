@@ -15,8 +15,7 @@ func newCmdItemDelegate() list.DefaultDelegate {
 		Foreground(lipgloss.Color(cmdRunListColor)).
 		BorderLeftForeground(lipgloss.Color(cmdRunListColor))
 	d.Styles.SelectedDesc = d.Styles.
-		SelectedTitle.
-		Copy()
+		SelectedTitle
 
 	d.UpdateFunc = func(msg tea.Msg, m *list.Model) tea.Cmd {
 		switch msgType := msg.(type) {

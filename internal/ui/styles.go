@@ -32,7 +32,7 @@ var (
 			PaddingRight(1).
 			Foreground(lipgloss.Color("#282828"))
 
-	modeStyle = baseStyle.Copy().
+	modeStyle = baseStyle.
 			Align(lipgloss.Center).
 			Bold(true).
 			Background(lipgloss.Color("#b8bb26"))
@@ -40,22 +40,22 @@ var (
 	cmdIndicatorStyle = lipgloss.NewStyle().
 				Bold(true)
 
-	cmdWaitingStyle = cmdIndicatorStyle.Copy().
+	cmdWaitingStyle = cmdIndicatorStyle.
 			Foreground(lipgloss.Color(cmdWaitingColor))
 
-	cmdScheduledStyle = cmdIndicatorStyle.Copy().
+	cmdScheduledStyle = cmdIndicatorStyle.
 				Foreground(lipgloss.Color(cmdScheduledColor))
 
-	cmdRunningStyle = cmdIndicatorStyle.Copy().
+	cmdRunningStyle = cmdIndicatorStyle.
 			Foreground(lipgloss.Color(cmdRunningColor))
 
-	cmdRanStyle = cmdIndicatorStyle.Copy().
+	cmdRanStyle = cmdIndicatorStyle.
 			Foreground(lipgloss.Color(cmdRanColor))
 
-	cmdErrorStyle = cmdIndicatorStyle.Copy().
+	cmdErrorStyle = cmdIndicatorStyle.
 			Foreground(lipgloss.Color(cmdErrorColor))
 
-	cmdAbandonedStyle = cmdIndicatorStyle.Copy().
+	cmdAbandonedStyle = cmdIndicatorStyle.
 				Foreground(lipgloss.Color(cmdAbandonedColor))
 
 	cmdErrorDetailsStyle = lipgloss.NewStyle().
@@ -81,7 +81,7 @@ var (
 				Bold(true).
 				Foreground(lipgloss.Color(cmdAbandonedColor))
 
-	inActivePaneHeaderStyle = baseStyle.Copy().
+	inActivePaneHeaderStyle = baseStyle.
 				Align(lipgloss.Left).
 				Bold(true).
 				Background(lipgloss.Color(inactivePaneColor))
