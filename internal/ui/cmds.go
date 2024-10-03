@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
 	"time"
 
@@ -33,8 +35,9 @@ func runCmd(cmd []string, iterationNum int) tea.Cmd {
 			c = exec.Command(cmd[0])
 		} else {
 			c = exec.Command(cmd[0], cmd[1:]...)
-
 		}
+
+		c.Env = append(os.Environ(), fmt.Sprintf("MULT_RUN_NUM=%d", iterationNum))
 		startTime := time.Now()
 		out, err := c.CombinedOutput()
 		endTime := time.Now()
