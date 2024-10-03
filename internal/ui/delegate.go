@@ -18,6 +18,7 @@ func newCmdItemDelegate() list.DefaultDelegate {
 		SelectedTitle
 
 	d.UpdateFunc = func(msg tea.Msg, m *list.Model) tea.Cmd {
+		//revive:disable:unnecessary-stmt
 		switch msgType := msg.(type) {
 		case tea.KeyMsg:
 			switch {
@@ -34,6 +35,7 @@ func newCmdItemDelegate() list.DefaultDelegate {
 				}
 			}
 		}
+		//revive:enable:unnecessary-stmt
 		return nil
 	}
 

@@ -5,8 +5,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFailure bool) model {
-
+func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFailure bool) Model {
 	stackItems := make([]list.Item, 0)
 
 	stackItems = append(stackItems, command{
@@ -43,7 +42,7 @@ func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopO
 	outputTitleStyle := inActivePaneHeaderStyle.
 		Background(lipgloss.Color(inactivePaneColor))
 
-	m := model{
+	m := Model{
 		cmd:              cmd,
 		message:          "hello",
 		numRuns:          numRuns,

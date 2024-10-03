@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -8,10 +9,10 @@ import (
 	"github.com/dhth/mult/internal/ui"
 )
 
-func die(msg string, args ...any) {
-	fmt.Fprintf(os.Stderr, msg+"\n", args...)
-	os.Exit(1)
-}
+var (
+	errInvalidNumRunsRequested = errors.New("invalid number of runs requested")
+	errNoCommandProvided       = errors.New("no command provided")
+)
 
 var (
 	numRuns       = flag.Int("n", 5, "number of times to run the command")
@@ -21,7 +22,7 @@ var (
 	interactive   = flag.Bool("i", false, "accept flag values interactively (takes precendence over -n)")
 )
 
-func Execute() {
+func Execute() error {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "%s\nFlags:\n", helpText)
 		flag.PrintDefaults()
@@ -33,19 +34,19 @@ func Execute() {
 		fmt.Printf("number of runs?\n")
 		_, err := fmt.Scanf("%d", &nRuns)
 		if err != nil {
-			die("provide a valid integer")
+			return fmt.Errorf("%w: invalid integer provided", errInvalidNumRunsRequested)
 		}
 	} else {
 		nRuns = *numRuns
 	}
 
 	if nRuns <= 1 {
-		die("number of runs needs to greater than 1")
+		return fmt.Errorf("%w: needs to greater than 1", errInvalidNumRunsRequested)
 	}
 
 	cmdToRun := flag.Args()
 	if len(cmdToRun) == 0 {
-		die("Provide a command to run")
+		return errNoCommandProvided
 	}
-	ui.RenderUI(cmdToRun, nRuns, *sequential, *delayMS, *stopOnFailure)
+	return ui.RenderUI(cmdToRun, nRuns, *sequential, *delayMS, *stopOnFailure)
 }

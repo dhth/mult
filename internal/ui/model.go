@@ -16,7 +16,7 @@ const (
 	outputPane
 )
 
-type model struct {
+type Model struct {
 	cmd              []string
 	numRuns          int
 	runList          list.Model
@@ -39,16 +39,18 @@ type model struct {
 	abandoned        bool
 }
 
-func (m model) Init() tea.Cmd {
+func (m Model) Init() tea.Cmd {
 	var cmds []tea.Cmd
 	cmds = append(cmds, hideHelp(time.Minute*1))
 	cmds = append(cmds, runCmd(m.cmd, 0))
+
 	if m.sequential {
 		return tea.Batch(cmds...)
-	} else {
-		for i := 1; i < m.numRuns; i++ {
-			cmds = append(cmds, runCmd(m.cmd, i))
-		}
-		return tea.Batch(cmds...)
 	}
+
+	for i := 1; i < m.numRuns; i++ {
+		cmds = append(cmds, runCmd(m.cmd, i))
+	}
+
+	return tea.Batch(cmds...)
 }
