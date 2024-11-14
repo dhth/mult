@@ -72,7 +72,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.resultsCache[i] = fmt.Sprintf("%s\n%s", run.Output, errDetails)
 				m.numErrors++
 			} else {
+				m.numSuccessfulRuns++
 				m.resultsCache[i] = run.Output
+				m.totalMS += run.TookMS
+				m.averageMS = m.totalMS / int64(m.numSuccessfulRuns)
 			}
 
 			if m.firstFetch {

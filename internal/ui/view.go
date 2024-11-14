@@ -30,6 +30,11 @@ func (m Model) View() string {
 
 	numRunsMsg := numRunsStyle.Render(fmt.Sprintf("%d/%d", m.numRunsFinished, m.numRuns))
 
+	var averageTimeMsg string
+	if m.numSuccessfulRuns > 0 {
+		averageTimeMsg = averageTimeMsgStyle.Render(fmt.Sprintf("average time: %d ms", m.averageMS))
+	}
+
 	var numErrorsMsg string
 	if m.numErrors > 0 {
 		numErrorsMsg = numErrorsStyle.Render(fmt.Sprintf("%d errors", m.numErrors))
@@ -40,12 +45,13 @@ func (m Model) View() string {
 		abandonedMsg = abandonedMsgStyle.Render("abandoned")
 	}
 
-	footerStr := fmt.Sprintf("%s%s%s%s%s",
+	footerStr := fmt.Sprintf("%s%s%s%s%s%s",
 		modeStyle.Render("mult"),
+		helpMsg,
 		numRunsMsg,
+		averageTimeMsg,
 		numErrorsMsg,
 		abandonedMsg,
-		helpMsg,
 	)
 	footer = footerStyle.Render(footerStr)
 

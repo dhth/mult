@@ -8,6 +8,7 @@ const (
 	defaultBackgroundColor = "#282828"
 	cmdWaitingColor        = "#fabd2f"
 	cmdScheduledColor      = "#928374"
+	averageTimeColor       = "#fabd2f"
 	cmdRunningColor        = "#83a598"
 	cmdRanColor            = "#b8bb26"
 	cmdErrorColor          = "#fb4934"
@@ -70,6 +71,11 @@ var (
 			PaddingLeft(2).
 			Bold(true).
 			Foreground(lipgloss.Color(cmdScheduledColor))
+
+	averageTimeMsgStyle = lipgloss.NewStyle().
+				PaddingLeft(2).
+				Bold(true).
+				Foreground(lipgloss.Color(averageTimeColor))
 
 	numErrorsStyle = lipgloss.NewStyle().
 			PaddingLeft(2).

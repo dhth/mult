@@ -17,31 +17,34 @@ const (
 )
 
 type Model struct {
-	cmd              []string
-	numRuns          int
-	runList          list.Model
-	outputVP         viewport.Model
-	outputVPReady    bool
-	resultsCache     map[int]string
-	message          string
-	runListStyle     lipgloss.Style
-	outputTitleStyle lipgloss.Style
-	terminalHeight   int
-	terminalWidth    int
-	showHelp         bool
-	activePane       Pane
-	firstFetch       bool
-	sequential       bool
-	delayMS          int
-	numRunsFinished  int
-	numErrors        int
-	stopOnFirstError bool
-	abandoned        bool
+	cmd               []string
+	numRuns           int
+	runList           list.Model
+	outputVP          viewport.Model
+	outputVPReady     bool
+	resultsCache      map[int]string
+	message           string
+	runListStyle      lipgloss.Style
+	outputTitleStyle  lipgloss.Style
+	terminalHeight    int
+	terminalWidth     int
+	showHelp          bool
+	activePane        Pane
+	firstFetch        bool
+	sequential        bool
+	delayMS           int
+	averageMS         int64
+	totalMS           int64
+	numRunsFinished   int
+	numSuccessfulRuns int
+	numErrors         int
+	stopOnFirstError  bool
+	abandoned         bool
 }
 
 func (m Model) Init() tea.Cmd {
 	var cmds []tea.Cmd
-	cmds = append(cmds, hideHelp(time.Minute*1))
+	cmds = append(cmds, hideHelp(time.Second*30))
 	cmds = append(cmds, runCmd(m.cmd, 0))
 
 	if m.sequential {
