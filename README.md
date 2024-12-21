@@ -25,6 +25,12 @@ mult command --you=want to run
 💾 Installation
 ---
 
+**Arch Linux**:
+
+```sh
+yay -S mult
+```
+
 **homebrew**:
 
 ```sh
