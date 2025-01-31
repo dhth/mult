@@ -1,7 +1,9 @@
 # mult
 
-✨ Overview
----
+[![Build Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/mult/build.yml?style=flat-square)](https://github.com/dhth/mult/actions/workflows/build.yml)
+[![Vulncheck Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/mult/vulncheck.yml?style=flat-square&label=vulncheck)](https://github.com/dhth/mult/actions/workflows/vulncheck.yml)
+[![Latest Release](https://img.shields.io/github/release/dhth/mult.svg?style=flat-square)](https://github.com/dhth/mult/releases/latest)
+[![Commits Since Latest Release](https://img.shields.io/github/commits-since/dhth/mult/latest?style=flat-square)](https://github.com/dhth/mult/releases)
 
 Run a command multiple times and glance at the outputs.
 
