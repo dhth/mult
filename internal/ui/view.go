@@ -6,6 +6,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+var runListWidth = 32
+
 func (m Model) View() string {
 	var content string
 	var footer string
@@ -15,7 +17,7 @@ func (m Model) View() string {
 		statusBar = RightPadTrim(m.message, m.terminalWidth)
 	}
 
-	listView := m.runListStyle.Render(m.runList.View())
+	listView := runListStyle.Render(m.runList.View())
 	outputView := lipgloss.JoinVertical(lipgloss.Left, "\n"+m.outputTitleStyle.Render("Output")+"\n\n"+m.outputVP.View())
 	content = lipgloss.JoinHorizontal(lipgloss.Top, listView, outputView)
 
@@ -28,7 +30,7 @@ func (m Model) View() string {
 		helpMsg = helpMsgStyle.Render("tab: switch focus; j/k/down/up: scroll output up/down")
 	}
 
-	numRunsMsg := numRunsStyle.Render(fmt.Sprintf("%d/%d", m.numRunsFinished, m.numRuns))
+	numRunsMsg := numRunsStyle.Render(fmt.Sprintf("%d/%d", m.numRunsFinished, m.config.NumRuns))
 
 	var averageTimeMsg string
 	if m.numSuccessfulRuns > 0 {

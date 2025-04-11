@@ -40,11 +40,11 @@ func (c command) Description() string {
 		if c.Err != nil {
 			exitIndicator = cmdErrorStyle.Render("errored")
 		} else {
-			exitIndicator = cmdRanStyle.Render("finished")
+			exitIndicator = cmdSuccessStyle.Render("finished")
 		}
 		runIndicator = fmt.Sprintf("%s %s",
 			exitIndicator,
-			cmdDurationStyle.Render(fmt.Sprintf("in %d ms",
+			cmdDurationStyle.Render(fmt.Sprintf("after %d ms",
 				c.TookMS)))
 	}
 	return runIndicator

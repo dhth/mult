@@ -3,9 +3,10 @@ package ui
 import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/dhth/mult/internal/types"
 )
 
-func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFailure bool) Model {
+func InitialModel(cmd []string, config types.Config) Model {
 	stackItems := make([]list.Item, 0)
 
 	stackItems = append(stackItems, command{
@@ -13,9 +14,9 @@ func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopO
 		RunStatus:    running,
 	})
 
-	for i := 1; i < numRuns; i++ {
+	for i := 1; i < config.NumRuns; i++ {
 		var rs runStatus
-		if sequential {
+		if config.Sequential {
 			rs = scheduled
 		} else {
 			rs = running
@@ -28,33 +29,18 @@ func InitialModel(cmd []string, numRuns int, sequential bool, delayMS int, stopO
 
 	del := newCmdItemDelegate()
 
-	baseStyle = lipgloss.NewStyle().
-		PaddingLeft(1).
-		PaddingRight(1).
-		Foreground(lipgloss.Color(defaultBackgroundColor))
-
-	tableListStyle := baseStyle.
-		PaddingTop(1).
-		PaddingRight(2).
-		PaddingLeft(1).
-		PaddingBottom(1)
-
 	outputTitleStyle := inActivePaneHeaderStyle.
 		Background(lipgloss.Color(inactivePaneColor))
 
 	m := Model{
 		cmd:              cmd,
 		message:          "hello",
-		numRuns:          numRuns,
+		config:           config,
 		resultsCache:     make(map[int]string),
-		runList:          list.New(stackItems, del, 0, 0),
-		runListStyle:     tableListStyle,
+		runList:          list.New(stackItems, del, runListWidth, 0),
 		outputTitleStyle: outputTitleStyle,
 		showHelp:         true,
 		firstFetch:       true,
-		sequential:       sequential,
-		delayMS:          delayMS,
-		stopOnFirstError: stopOnFailure,
 	}
 
 	m.runList.Title = "Runs"

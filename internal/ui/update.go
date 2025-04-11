@@ -27,11 +27,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 		case "tab", "shift+tab":
-			if m.activePane == cmdRunListPane {
+			switch m.activePane {
+			case cmdRunListPane:
 				m.activePane = outputPane
 				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(activePaneColor))
 				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(inactivePaneColor))
-			} else if m.activePane == outputPane {
+			case outputPane:
 				m.activePane = cmdRunListPane
 				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
 				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
@@ -40,12 +41,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case HideHelpMsg:
 		m.showHelp = false
 	case tea.WindowSizeMsg:
-		w1, h1 := m.runListStyle.GetFrameSize()
+		_, h1 := m.runListStyle.GetFrameSize()
 		m.terminalWidth = msg.Width
 		m.terminalHeight = msg.Height
-		m.runList.SetHeight(msg.Height - h1 - 2)
-		m.runList.SetWidth(int(float64(msg.Width)*0.25) - w1 - 2)
-		m.runListStyle = m.runListStyle.Width(int(float64(msg.Width)*0.25) - w1)
+		m.runList.SetHeight(msg.Height - h1 - 4)
 
 		if !m.outputVPReady {
 			m.outputVP = viewport.New(msg.Width-m.runListStyle.GetWidth()-2, msg.Height-8)
@@ -90,9 +89,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		}
 
-		if i < m.numRuns-1 && m.sequential {
-			if m.stopOnFirstError && msg.err != nil {
-				for j := i + 1; j < m.numRuns; j++ {
+		if i < m.config.NumRuns-1 && m.config.Sequential {
+			if (m.config.StopOnFirstFailure && msg.err != nil) || (m.config.StopOnFirstSuccess && msg.err == nil) {
+				for j := i + 1; j < m.config.NumRuns; j++ {
 					nextRun, ok := m.runList.Items()[i+1].(command)
 					if ok {
 						nextRun.RunStatus = abandoned
@@ -101,7 +100,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				m.abandoned = true
 			} else {
-				if m.delayMS == 0 {
+				if m.config.DelayMS == 0 {
 					nextRun, ok := m.runList.Items()[i+1].(command)
 					if ok {
 						nextRun.RunStatus = running
@@ -113,7 +112,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					if ok {
 						nextRun.RunStatus = waiting
 						cmds = append(cmds, m.runList.SetItem(i+1, nextRun))
-						cmds = append(cmds, runAfterDelay(time.Millisecond*time.Duration(m.delayMS), i+1))
+						cmds = append(cmds, runAfterDelay(time.Millisecond*time.Duration(m.config.DelayMS), i+1))
 					}
 				}
 			}
