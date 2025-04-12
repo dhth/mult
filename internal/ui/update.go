@@ -48,7 +48,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if !m.outputVPReady {
 			m.outputVP = viewport.New(msg.Width-m.runListStyle.GetWidth()-2, msg.Height-8)
-			m.outputVP.HighPerformanceRendering = false
 			m.outputVPReady = true
 		} else {
 			m.outputVP.Width = msg.Width - m.runListStyle.GetWidth() - 2
