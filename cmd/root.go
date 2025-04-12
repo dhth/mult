@@ -54,15 +54,15 @@ func Execute() error {
 	}
 
 	if *stopOnFirstFailure && !*sequential {
-		return fmt.Errorf("%w: -ff can only be used in sequential mode", errInvalidFlagsProvided)
+		return fmt.Errorf("%w: -F can only be used in sequential mode", errInvalidFlagsProvided)
 	}
 
 	if *stopOnFirstSuccess && !*sequential {
-		return fmt.Errorf("%w: -ff can only be used in sequential mode", errInvalidFlagsProvided)
+		return fmt.Errorf("%w: -S can only be used in sequential mode", errInvalidFlagsProvided)
 	}
 
 	if *stopOnFirstSuccess && *stopOnFirstFailure {
-		return fmt.Errorf("%w: -ff and -S cannot be used at the same time", errInvalidFlagsProvided)
+		return fmt.Errorf("%w: -F and -S cannot be used at the same time", errInvalidFlagsProvided)
 	}
 
 	cmdToRun := flag.Args()
