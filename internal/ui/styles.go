@@ -33,6 +33,12 @@ var (
 			PaddingRight(1).
 			Foreground(lipgloss.Color("#282828"))
 
+	runListStyle = baseStyle.
+			PaddingTop(1).
+			PaddingRight(2).
+			PaddingBottom(1).
+			Width(runListWidth + 4)
+
 	modeStyle = baseStyle.
 			Align(lipgloss.Center).
 			Bold(true).
@@ -50,7 +56,7 @@ var (
 	cmdRunningStyle = cmdIndicatorStyle.
 			Foreground(lipgloss.Color(cmdRunningColor))
 
-	cmdRanStyle = cmdIndicatorStyle.
+	cmdSuccessStyle = cmdIndicatorStyle.
 			Foreground(lipgloss.Color(cmdRanColor))
 
 	cmdErrorStyle = cmdIndicatorStyle.

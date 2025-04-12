@@ -7,6 +7,7 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/dhth/mult/internal/types"
 )
 
 type Pane uint
@@ -18,7 +19,7 @@ const (
 
 type Model struct {
 	cmd               []string
-	numRuns           int
+	config            types.Config
 	runList           list.Model
 	outputVP          viewport.Model
 	outputVPReady     bool
@@ -31,14 +32,11 @@ type Model struct {
 	showHelp          bool
 	activePane        Pane
 	firstFetch        bool
-	sequential        bool
-	delayMS           int
 	averageMS         int64
 	totalMS           int64
 	numRunsFinished   int
 	numSuccessfulRuns int
 	numErrors         int
-	stopOnFirstError  bool
 	abandoned         bool
 }
 
@@ -47,11 +45,11 @@ func (m Model) Init() tea.Cmd {
 	cmds = append(cmds, hideHelp(time.Second*30))
 	cmds = append(cmds, runCmd(m.cmd, 0))
 
-	if m.sequential {
+	if m.config.Sequential {
 		return tea.Batch(cmds...)
 	}
 
-	for i := 1; i < m.numRuns; i++ {
+	for i := 1; i < m.config.NumRuns; i++ {
 		cmds = append(cmds, runCmd(m.cmd, i))
 	}
 

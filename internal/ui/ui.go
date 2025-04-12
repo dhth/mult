@@ -6,11 +6,12 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/dhth/mult/internal/types"
 )
 
 var errFailedToConfigureDebugging = errors.New("failed to configure debugging")
 
-func RenderUI(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFailure bool) error {
+func RenderUI(cmd []string, config types.Config) error {
 	if len(os.Getenv("DEBUG")) > 0 {
 		f, err := tea.LogToFile("debug.log", "debug")
 		if err != nil {
@@ -19,7 +20,7 @@ func RenderUI(cmd []string, numRuns int, sequential bool, delayMS int, stopOnFai
 		defer f.Close()
 	}
 
-	p := tea.NewProgram(InitialModel(cmd, numRuns, sequential, delayMS, stopOnFailure), tea.WithAltScreen())
+	p := tea.NewProgram(InitialModel(cmd, config), tea.WithAltScreen())
 	_, err := p.Run()
 
 	return err
