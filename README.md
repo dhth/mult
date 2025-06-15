@@ -1,9 +1,12 @@
-# mult
-
-[![Build Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/mult/build.yml?style=flat-square)](https://github.com/dhth/mult/actions/workflows/build.yml)
-[![Vulncheck Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/mult/vulncheck.yml?style=flat-square&label=vulncheck)](https://github.com/dhth/mult/actions/workflows/vulncheck.yml)
-[![Latest Release](https://img.shields.io/github/release/dhth/mult.svg?style=flat-square)](https://github.com/dhth/mult/releases/latest)
-[![Commits Since Latest Release](https://img.shields.io/github/commits-since/dhth/mult/latest?style=flat-square)](https://github.com/dhth/mult/releases)
+<p align="center">
+  <h1 align="center">mult</h1>
+  <p align="center">
+    <a href="https://github.com/dhth/mult/actions/workflows/main.yml"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/dhth/mult/main.yml?style=flat-square"></a>
+    <a href="https://github.com/dhth/mult/actions/workflows/vulncheck.yml"><img alt="Vulnerability Check" src="https://img.shields.io/github/actions/workflow/status/dhth/mult/vulncheck.yml?style=flat-square&label=vulncheck"></a>
+    <a href="https://github.com/dhth/mult/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/release/dhth/mult.svg?style=flat-square"></a>
+    <a href="https://github.com/dhth/mult/releases/latest"><img alt="Commits since latest release" src="https://img.shields.io/github/commits-since/dhth/mult/latest?style=flat-square"></a>
+  </p>
+</p>
 
 Run a command multiple times and glance at the outputs.
 
