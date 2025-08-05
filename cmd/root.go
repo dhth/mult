@@ -21,7 +21,7 @@ var (
 var (
 	numRuns            = flag.Int("n", 5, "number of times to run the command")
 	sequential         = flag.Bool("s", false, "whether to invoke the command sequentially")
-	delayMS            = flag.Int("d", 0, "time to sleep for between runs")
+	delayMS            = flag.Int("d", 0, "time (in ms) to sleep for between runs")
 	stopOnFirstFailure = flag.Bool("F", false, "whether to stop after first failure")
 	stopOnFirstSuccess = flag.Bool("S", false, "whether to stop after first success")
 	interactive        = flag.Bool("i", false, "accept flag values interactively (takes precendence over -n)")
@@ -29,6 +29,10 @@ var (
 
 func Execute() error {
 	flag.Usage = func() {
+		helpText := `Run a command multiple times and glance the outputs.
+
+Usage: mult [flags]
+`
 		fmt.Fprintf(os.Stderr, "%s\nFlags:\n", helpText)
 		flag.PrintDefaults()
 	}
