@@ -10,10 +10,6 @@
 
 Run a command multiple times and glance at the outputs.
 
-```bash
-mult command --you=want to run
-```
-
 <p align="center">
   <img src="https://tools.dhruvs.space/images/mult/mult-usage-1.gif" alt="Usage" />
 </p>
@@ -30,12 +26,6 @@ mult command --you=want to run
 💾 Installation
 ---
 
-**Arch Linux**:
-
-```sh
-yay -S mult
-```
-
 **homebrew**:
 
 ```sh
@@ -46,6 +36,12 @@ brew install dhth/tap/mult
 
 ```sh
 go install github.com/dhth/mult@latest
+```
+
+**Arch Linux**:
+
+```sh
+yay -S mult
 ```
 
 Or get the binaries directly from a
@@ -71,17 +67,13 @@ Flags:
 ### Specify number of runs
 
 ```bash
-mult \
-    -n=10 \
-    yourcommand --with=flags --and args as usual
+mult -n=10 yourcommand
 ```
 
 ### Ask for number of runs
 
 ```bash
-mult \
-    -i \
-    yourcommand --with=flags --and args as usual
+mult -i yourcommand
 ```
 
 ### Run sequentially
@@ -90,27 +82,25 @@ By default, `mult` executes all runs concurrently. Use `-s` for sequentially
 execution.
 
 ```bash
-mult \
-    -s \
-    yourcommand --with=flags --and args as usual
+mult -s yourcommand
 ```
 
 ### Add delay (in milliseconds) between runs
 
 ```bash
-mult \
-    -s \
-    -d=500 \
-    yourcommand --with=flags --and args as-usual
+mult -s -d=500 yourcommand
 ```
 
 ### Stop at first failure
 
 ```bash
-mult \
-    -s \
-    -F \
-    yourcommand --with=flags --and args as usual
+mult -s -F yourcommand
+```
+
+### Stop at first success
+
+```bash
+mult -s -S yourcommand
 ```
 
 *Note: `-d`, `-F`, `-S` only apply in sequential run mode.*
