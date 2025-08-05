@@ -54,12 +54,26 @@ Or get the binaries directly from a
 ⚡️ Usage
 ---
 
+```text
+Usage: mult [flags]
+
+Flags:
+  -F    whether to stop after first failure
+  -S    whether to stop after first success
+  -d int
+        time (in ms) to sleep for between runs
+  -i    accept flag values interactively (takes precendence over -n)
+  -n int
+        number of times to run the command (default 5)
+  -s    whether to invoke the command sequentially
+```
+
 ### Specify number of runs
 
 ```bash
 mult \
     -n=10 \
-    yourcommand --with=flags --and=args as usual
+    yourcommand --with=flags --and args as usual
 ```
 
 ### Ask for number of runs
@@ -67,7 +81,7 @@ mult \
 ```bash
 mult \
     -i \
-    yourcommand --with=flags --and=args as usual
+    yourcommand --with=flags --and args as usual
 ```
 
 ### Run sequentially
@@ -78,7 +92,7 @@ execution.
 ```bash
 mult \
     -s \
-    yourcommand --with=flags --and=args as usual
+    yourcommand --with=flags --and args as usual
 ```
 
 ### Add delay (in milliseconds) between runs
@@ -86,8 +100,8 @@ mult \
 ```bash
 mult \
     -s \
-    -delay-ms=500 \
-    yourcommand --with=flags --and=args as usual
+    -d=500 \
+    yourcommand --with=flags --and args as-usual
 ```
 
 ### Stop at first failure
@@ -95,8 +109,8 @@ mult \
 ```bash
 mult \
     -s \
-    -ff \
-    yourcommand --with=flags --and=args as usual
+    -F \
+    yourcommand --with=flags --and args as usual
 ```
 
-*Note: `-delay-ms`, `-ff` only apply in sequential run mode.*
+*Note: `-d`, `-F`, `-S` only apply in sequential run mode.*
