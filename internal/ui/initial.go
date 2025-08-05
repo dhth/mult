@@ -3,10 +3,10 @@ package ui
 import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/dhth/mult/internal/types"
+	d "github.com/dhth/mult/internal/domain"
 )
 
-func InitialModel(cmd []string, config types.Config) Model {
+func InitialModel(cmd []string, config d.Config) Model {
 	stackItems := make([]list.Item, 0)
 
 	stackItems = append(stackItems, command{

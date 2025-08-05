@@ -1,4 +1,4 @@
-package types
+package domain
 
 type Config struct {
 	NumRuns            int

@@ -6,12 +6,12 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/dhth/mult/internal/types"
+	d "github.com/dhth/mult/internal/domain"
 )
 
 var errFailedToConfigureDebugging = errors.New("failed to configure debugging")
 
-func RenderUI(cmd []string, config types.Config) error {
+func RenderUI(cmd []string, config d.Config) error {
 	if len(os.Getenv("DEBUG")) > 0 {
 		f, err := tea.LogToFile("debug.log", "debug")
 		if err != nil {

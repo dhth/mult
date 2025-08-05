@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dhth/mult/internal/types"
+	d "github.com/dhth/mult/internal/domain"
 	"github.com/dhth/mult/internal/ui"
 )
 
@@ -74,7 +74,7 @@ Usage: mult [flags]
 		return errNoCommandProvided
 	}
 
-	config := types.Config{
+	config := d.Config{
 		NumRuns:            nRuns,
 		Sequential:         *sequential,
 		DelayMS:            *delayMS,

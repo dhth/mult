@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dhth/mult/cmd"
+	"github.com/dhth/mult/internal/cmd"
 )
 
 func main() {

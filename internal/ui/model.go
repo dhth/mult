@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/dhth/mult/internal/types"
+	d "github.com/dhth/mult/internal/domain"
 )
 
 type Pane uint
@@ -19,7 +19,7 @@ const (
 
 type Model struct {
 	cmd               []string
-	config            types.Config
+	config            d.Config
 	runList           list.Model
 	outputVP          viewport.Model
 	outputVPReady     bool
