@@ -16,14 +16,10 @@ const (
 	cmdDurationColor       = "#928374"
 	cmdRunColor            = "#928374"
 	cmdAbandonedColor      = "#bdae93"
+	followingColor         = "#d3869b"
 	cmdErrorDetailsColor   = "#928374"
 	activePaneColor        = "#b8bb26"
 	inactivePaneColor      = "#928374"
-	modeColor              = "#b8bb26"
-	helpMsgColor           = "#83a598"
-	helpViewTitleColor     = "#83a598"
-	helpHeaderColor        = "#83a598"
-	helpSectionColor       = "#fabd2f"
 	numErrorsColor         = "#fb4934"
 )
 
@@ -68,30 +64,27 @@ var (
 	cmdErrorDetailsStyle = lipgloss.NewStyle().
 				Foreground(lipgloss.Color(cmdErrorDetailsColor))
 
-	helpMsgStyle = lipgloss.NewStyle().
-			PaddingLeft(2).
-			Bold(true).
+	statusBarElementStyle = lipgloss.NewStyle().
+				PaddingLeft(2).
+				Bold(true)
+
+	helpMsgStyle = statusBarElementStyle.
 			Foreground(lipgloss.Color("#83a598"))
 
-	numRunsStyle = lipgloss.NewStyle().
-			PaddingLeft(2).
-			Bold(true).
+	numRunsStyle = statusBarElementStyle.
 			Foreground(lipgloss.Color(cmdScheduledColor))
 
-	averageTimeMsgStyle = lipgloss.NewStyle().
-				PaddingLeft(2).
-				Bold(true).
+	averageTimeMsgStyle = statusBarElementStyle.
 				Foreground(lipgloss.Color(averageTimeColor))
 
-	numErrorsStyle = lipgloss.NewStyle().
-			PaddingLeft(2).
-			Bold(true).
+	numErrorsStyle = statusBarElementStyle.
 			Foreground(lipgloss.Color(numErrorsColor))
 
-	abandonedMsgStyle = lipgloss.NewStyle().
-				PaddingLeft(2).
-				Bold(true).
+	abandonedMsgStyle = statusBarElementStyle.
 				Foreground(lipgloss.Color(cmdAbandonedColor))
+
+	followingStyle = statusBarElementStyle.
+			Foreground(lipgloss.Color(followingColor))
 
 	inActivePaneHeaderStyle = baseStyle.
 				Align(lipgloss.Left).

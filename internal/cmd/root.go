@@ -24,6 +24,7 @@ var (
 	delayMS            = flag.Int("d", 0, "time (in ms) to sleep for between runs")
 	stopOnFirstFailure = flag.Bool("F", false, "whether to stop after first failure")
 	stopOnFirstSuccess = flag.Bool("S", false, "whether to stop after first success")
+	followRuns         = flag.Bool("f", false, "whether to automatically select the latest command run (only in sequential mode)")
 	interactive        = flag.Bool("i", false, "accept flag values interactively (takes precendence over -n)")
 )
 
@@ -69,6 +70,10 @@ Usage: mult [flags]
 		return fmt.Errorf("%w: -F and -S cannot be used at the same time", errInvalidFlagsProvided)
 	}
 
+	if *followRuns && !*sequential {
+		return fmt.Errorf("%w: -f can only be used in sequential mode", errInvalidFlagsProvided)
+	}
+
 	cmdToRun := flag.Args()
 	if len(cmdToRun) == 0 {
 		return errNoCommandProvided
@@ -78,6 +83,7 @@ Usage: mult [flags]
 		NumRuns:            nRuns,
 		Sequential:         *sequential,
 		DelayMS:            *delayMS,
+		FollowResults:      *followRuns,
 		StopOnFirstFailure: *stopOnFirstFailure,
 		StopOnFirstSuccess: *stopOnFirstSuccess,
 	}
