@@ -58,32 +58,34 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.numRunsFinished++
 		i := msg.iterationNum
 		run, ok := m.runList.Items()[i].(command)
-		if ok {
-			run.Output = msg.output
-			run.Err = msg.err
-			run.RunStatus = finished
-			run.TookMS = msg.tookMS
-			cmds = append(cmds, m.runList.SetItem(i, run))
+		if !ok {
+			break
+		}
 
-			if msg.err != nil {
-				errDetails := cmdErrorDetailsStyle.Render(fmt.Sprintf("---\n%s", msg.err.Error()))
-				m.resultsCache[i] = fmt.Sprintf("%s\n%s", run.Output, errDetails)
-				m.numErrors++
-			} else {
-				m.numSuccessfulRuns++
-				m.resultsCache[i] = run.Output
-				m.totalMS += run.TookMS
-				m.averageMS = m.totalMS / int64(m.numSuccessfulRuns)
-			}
+		run.Output = msg.output
+		run.Err = msg.err
+		run.RunStatus = finished
+		run.TookMS = msg.tookMS
+		cmds = append(cmds, m.runList.SetItem(i, run))
 
-			if m.firstFetch {
-				selected, ok := m.runList.SelectedItem().(command)
+		if msg.err != nil {
+			errDetails := cmdErrorDetailsStyle.Render(fmt.Sprintf("---\n%s", msg.err.Error()))
+			m.resultsCache[i] = fmt.Sprintf("%s\n%s", run.Output, errDetails)
+			m.numErrors++
+		} else {
+			m.numSuccessfulRuns++
+			m.resultsCache[i] = run.Output
+			m.totalMS += run.TookMS
+			m.averageMS = m.totalMS / int64(m.numSuccessfulRuns)
+		}
+
+		if m.firstFetch {
+			selected, ok := m.runList.SelectedItem().(command)
+			if ok {
+				resultFromCache, ok := m.resultsCache[selected.IterationNum]
 				if ok {
-					resultFromCache, ok := m.resultsCache[selected.IterationNum]
-					if ok {
-						m.outputVP.SetContent(resultFromCache)
-						m.firstFetch = false
-					}
+					m.outputVP.SetContent(resultFromCache)
+					m.firstFetch = false
 				}
 			}
 		}
@@ -118,11 +120,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	case DelayTimeElapsedMsg:
 		run, ok := m.runList.Items()[msg.iterationNum].(command)
-		if ok {
-			run.RunStatus = running
-			cmds = append(cmds, m.runList.SetItem(msg.iterationNum, run))
-			cmds = append(cmds, runCmd(m.cmd, msg.iterationNum))
+		if !ok {
+			break
 		}
+
+		run.RunStatus = running
+		cmds = append(cmds, m.runList.SetItem(msg.iterationNum, run))
+		cmds = append(cmds, runCmd(m.cmd, msg.iterationNum))
 
 	case CmdRunChosenMsg:
 		resultFromCache, ok := m.resultsCache[msg.runNum]
