@@ -139,6 +139,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	}
 
+	switch m.activePane {
+	case cmdRunListPane:
+		m.runList, cmd = m.runList.Update(msg)
+		cmds = append(cmds, cmd)
+	case outputPane:
+		m.outputVP, cmd = m.outputVP.Update(msg)
+		cmds = append(cmds, cmd)
+	}
+
 	runIndex := m.runList.Index()
 	if runIndex != m.lastRunIndex {
 		m.lastRunIndex = runIndex
@@ -148,15 +157,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		} else {
 			m.outputVP.SetContent("")
 		}
-	}
-
-	switch m.activePane {
-	case cmdRunListPane:
-		m.runList, cmd = m.runList.Update(msg)
-		cmds = append(cmds, cmd)
-	case outputPane:
-		m.outputVP, cmd = m.outputVP.Update(msg)
-		cmds = append(cmds, cmd)
 	}
 
 	return m, tea.Batch(cmds...)
