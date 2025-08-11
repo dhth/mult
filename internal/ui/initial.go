@@ -7,24 +7,19 @@ import (
 )
 
 func InitialModel(cmd []string, config d.Config) Model {
-	stackItems := make([]list.Item, 0)
+	stackItems := make([]list.Item, config.NumRuns)
 
-	stackItems = append(stackItems, command{
-		IterationNum: 0,
-		RunStatus:    running,
-	})
-
-	for i := 1; i < config.NumRuns; i++ {
+	for i := range config.NumRuns {
 		var rs runStatus
-		if config.Sequential {
-			rs = scheduled
-		} else {
+		if i == 0 || !config.Sequential {
 			rs = running
+		} else {
+			rs = scheduled
 		}
-		stackItems = append(stackItems, command{
+		stackItems[i] = command{
 			IterationNum: i,
 			RunStatus:    rs,
-		})
+		}
 	}
 
 	del := newCmdItemDelegate()

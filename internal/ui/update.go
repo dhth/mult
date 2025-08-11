@@ -43,7 +43,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.config.FollowResults = !m.config.FollowResults
 		case "ctrl+r":
 			if m.numRunsFinished < m.config.NumRuns {
-				m.msg = userMsg{"cannot restart while commands are being run, wait for them to finish", userMsgErr, 4}
+				m.msg = userMsg{"cannot restart while commands are being run; wait for them to finish", userMsgErr, 4}
 			} else {
 				cmds = append(cmds, m.clearRunList())
 			}

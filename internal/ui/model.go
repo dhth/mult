@@ -82,17 +82,12 @@ func (m *Model) clearRunList() tea.Cmd {
 
 	stackItems := make([]list.Item, numRuns)
 
-	stackItems[0] = command{
-		IterationNum: 0,
-		RunStatus:    running,
-	}
-
-	for i := 1; i < numRuns; i++ {
+	for i := range numRuns {
 		var rs runStatus
-		if m.config.Sequential {
-			rs = scheduled
-		} else {
+		if i == 0 || !m.config.Sequential {
 			rs = running
+		} else {
+			rs = scheduled
 		}
 		stackItems[i] = command{
 			IterationNum: i,
@@ -115,14 +110,12 @@ func (m *Model) clearRunList() tea.Cmd {
 }
 
 func (m Model) restartRuns() tea.Cmd {
-	var cmds []tea.Cmd
-	cmds = append(cmds, runCmd(m.cmd, 0))
-
 	if m.config.Sequential {
-		return tea.Batch(cmds...)
+		return runCmd(m.cmd, 0)
 	}
 
-	for i := 1; i < m.config.NumRuns; i++ {
+	var cmds []tea.Cmd
+	for i := 0; i < m.config.NumRuns; i++ {
 		cmds = append(cmds, runCmd(m.cmd, i))
 	}
 
