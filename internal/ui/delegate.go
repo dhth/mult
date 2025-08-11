@@ -13,6 +13,7 @@ func newCmdItemDelegate() list.DefaultDelegate {
 	d.Styles.SelectedTitle = d.Styles.
 		SelectedTitle.
 		Foreground(lipgloss.Color(cmdRunListColor)).
+		BorderStyle(lipgloss.OuterHalfBlockBorder()).
 		BorderLeftForeground(lipgloss.Color(cmdRunListColor))
 	d.Styles.SelectedDesc = d.Styles.
 		SelectedTitle
