@@ -17,6 +17,19 @@ const (
 	outputPane
 )
 
+type userMsgKind uint
+
+const (
+	userMsgInfo userMsgKind = iota
+	userMsgErr
+)
+
+type userMsg struct {
+	value         string
+	kind          userMsgKind
+	numFramesLeft uint
+}
+
 type Model struct {
 	cmd               []string
 	config            d.Config
@@ -25,7 +38,7 @@ type Model struct {
 	outputVP          viewport.Model
 	outputVPReady     bool
 	resultsCache      map[int]string
-	message           string
+	msg               userMsg
 	runListStyle      lipgloss.Style
 	outputTitleStyle  lipgloss.Style
 	terminalHeight    int
@@ -51,6 +64,58 @@ func (m Model) Init() tea.Cmd {
 	}
 
 	for i := 1; i < m.config.NumRuns; i++ {
+		cmds = append(cmds, runCmd(m.cmd, i))
+	}
+
+	return tea.Batch(cmds...)
+}
+
+func (m *Model) clearRunList() tea.Cmd {
+	restart := func() tea.Msg {
+		return CmdListClearedMsg{}
+	}
+
+	numRuns := len(m.runList.Items())
+	if numRuns == 0 {
+		return restart
+	}
+
+	stackItems := make([]list.Item, numRuns)
+
+	for i := range numRuns {
+		var rs runStatus
+		if i == 0 || !m.config.Sequential {
+			rs = running
+		} else {
+			rs = scheduled
+		}
+		stackItems[i] = command{
+			IterationNum: i,
+			RunStatus:    rs,
+		}
+	}
+
+	m.resultsCache = make(map[int]string)
+	m.lastRunIndex = -1
+	m.firstFetch = true
+	m.averageMS = 0
+	m.totalMS = 0
+	m.numRunsFinished = 0
+	m.numSuccessfulRuns = 0
+	m.numErrors = 0
+	m.abandoned = false
+	m.runList.Select(0)
+
+	return tea.Sequence(m.runList.SetItems(stackItems), restart)
+}
+
+func (m Model) restartRuns() tea.Cmd {
+	if m.config.Sequential {
+		return runCmd(m.cmd, 0)
+	}
+
+	var cmds []tea.Cmd
+	for i := 0; i < m.config.NumRuns; i++ {
 		cmds = append(cmds, runCmd(m.cmd, i))
 	}
 

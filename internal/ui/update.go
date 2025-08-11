@@ -12,7 +12,9 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	var cmds []tea.Cmd
-	m.message = ""
+	if m.msg.numFramesLeft == 0 {
+		m.msg.value = ""
+	}
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -39,9 +41,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case "ctrl+f":
 			m.config.FollowResults = !m.config.FollowResults
+		case "ctrl+r":
+			if m.numRunsFinished < m.config.NumRuns {
+				m.msg = userMsg{"cannot restart while commands are being run; wait for them to finish", userMsgErr, 4}
+			} else {
+				cmds = append(cmds, m.clearRunList())
+			}
 		}
 	case HideHelpMsg:
 		m.showHelp = false
+	case CmdListClearedMsg:
+		cmds = append(cmds, m.restartRuns())
 	case tea.WindowSizeMsg:
 		_, h1 := m.runListStyle.GetFrameSize()
 		m.terminalWidth = msg.Width
@@ -157,6 +167,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		} else {
 			m.outputVP.SetContent("")
 		}
+	}
+
+	if m.msg.numFramesLeft > 0 {
+		m.msg.numFramesLeft--
 	}
 
 	return m, tea.Batch(cmds...)
