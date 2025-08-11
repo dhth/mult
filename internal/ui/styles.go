@@ -21,15 +21,17 @@ const (
 	activePaneColor        = "#b8bb26"
 	inactivePaneColor      = "#928374"
 	numErrorsColor         = "#fb4934"
+	modeColor              = "#b8bb26"
+	helpMsgColor           = "#83a598"
 )
 
 var (
 	baseStyle = lipgloss.NewStyle().
 			PaddingLeft(1).
 			PaddingRight(1).
-			Foreground(lipgloss.Color("#282828"))
+			Foreground(lipgloss.Color(defaultBackgroundColor))
 
-	runListStyle = baseStyle.
+	runListStyle = lipgloss.NewStyle().
 			PaddingTop(1).
 			PaddingRight(2).
 			PaddingBottom(1).
@@ -38,7 +40,7 @@ var (
 	modeStyle = baseStyle.
 			Align(lipgloss.Center).
 			Bold(true).
-			Background(lipgloss.Color("#b8bb26"))
+			Background(lipgloss.Color(modeColor))
 
 	cmdIndicatorStyle = lipgloss.NewStyle().
 				Bold(true)
@@ -69,7 +71,7 @@ var (
 				Bold(true)
 
 	helpMsgStyle = statusBarElementStyle.
-			Foreground(lipgloss.Color("#83a598"))
+			Foreground(lipgloss.Color(helpMsgColor))
 
 	numRunsStyle = statusBarElementStyle.
 			Foreground(lipgloss.Color(cmdScheduledColor))
