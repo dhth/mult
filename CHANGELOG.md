@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Keymaps for scrolling run list from the output pane
 - Keymaps to move in list from the output pane
 - Help pane
+- Long form versions for CLI flags
 
 ## [v0.2.0] - Aug 05, 2025
 

@@ -87,7 +87,6 @@ func NewRootCommand() *cobra.Command {
 				StopOnFirstSuccess: stopOnFirstSuccess,
 			}
 
-			fmt.Printf("cmd: %v\n", args)
 			return ui.RenderUI(args, config)
 		},
 	}
