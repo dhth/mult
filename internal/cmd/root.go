@@ -24,7 +24,7 @@ var (
 	delayMS            = flag.Int("d", 0, "time (in ms) to sleep for between runs")
 	stopOnFirstFailure = flag.Bool("F", false, "whether to stop after first failure")
 	stopOnFirstSuccess = flag.Bool("S", false, "whether to stop after first success")
-	followRuns         = flag.Bool("f", false, "whether to automatically select the latest command run (only in sequential mode)")
+	followRuns         = flag.Bool("f", false, `start with "follow mode" ON (ie, automatically select the latest command run)`)
 	interactive        = flag.Bool("i", false, "accept flag values interactively (takes precendence over -n)")
 )
 
