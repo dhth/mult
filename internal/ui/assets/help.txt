@@ -14,8 +14,8 @@ General
 
 Command Run List View
 
-  j / ↓                          Go to run below
-  k / ↑                          Go to run above
+  j / ↓                          Go to next run
+  k / ↑                          Go to previous run
   ctrl+r                         Restart all runs
   ctrl+f                         Toggle follow mode
 
@@ -23,5 +23,7 @@ Output View
 
   j / ↓                          Scroll output down
   k / ↑                          Scroll output up
+  l / →                          Go to next run
+  h / ←                          Go to previous run
   ctrl+r                         Restart all runs
   ctrl+f                         Toggle follow mode
