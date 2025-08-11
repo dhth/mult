@@ -28,15 +28,15 @@ func InitialModel(cmd []string, config d.Config) Model {
 		Background(lipgloss.Color(inactivePaneColor))
 
 	m := Model{
-		cmd:              cmd,
-		msg:              userMsg{},
-		config:           config,
-		lastRunIndex:     -1,
-		resultsCache:     make(map[int]string),
-		runList:          list.New(stackItems, del, runListWidth, 0),
-		outputTitleStyle: outputTitleStyle,
-		showHelp:         true,
-		firstFetch:       true,
+		cmd:               cmd,
+		msg:               userMsg{},
+		config:            config,
+		lastRunIndex:      -1,
+		resultsCache:      make(map[int]string),
+		runList:           list.New(stackItems, del, runListWidth, 0),
+		outputTitleStyle:  outputTitleStyle,
+		showHelpIndicator: true,
+		firstFetch:        true,
 	}
 
 	m.runList.Title = "Runs"

@@ -1,6 +1,7 @@
 package ui
 
 import (
+	_ "embed"
 	"fmt"
 	"time"
 
@@ -8,6 +9,9 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
+
+//go:embed assets/help.txt
+var helpText string
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
@@ -19,12 +23,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "ctrl+c", "q":
+		case "ctrl+c":
+			return m, tea.Quit
+		case "q", "esc":
 			switch m.activePane {
 			case outputPane:
 				m.activePane = cmdRunListPane
 				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
 				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
+			case helpPane:
+				m.activePane = m.lastPane
 			default:
 				return m, tea.Quit
 			}
@@ -40,8 +48,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
 			}
 		case "ctrl+f":
+			if m.activePane != cmdRunListPane && m.activePane != outputPane {
+				break
+			}
 			m.config.FollowResults = !m.config.FollowResults
 		case "ctrl+r":
+			if m.activePane != cmdRunListPane && m.activePane != outputPane {
+				break
+			}
+
 			if m.numRunsFinished < m.config.NumRuns {
 				m.msg = userMsg{"cannot restart while commands are being run; wait for them to finish", userMsgErr, 4}
 			} else {
@@ -71,9 +86,21 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.config.FollowResults {
 				m.config.FollowResults = false
 			}
+		case "?":
+			if m.activePane == helpPane {
+				m.activePane = m.lastPane
+				break
+			}
+
+			m.lastPane = m.activePane
+			m.helpVP.GotoTop()
+			m.showHelpIndicator = false
+			m.activePane = helpPane
 		}
 	case HideHelpMsg:
-		m.showHelp = false
+		if m.showHelpIndicator {
+			m.showHelpIndicator = false
+		}
 	case CmdListClearedMsg:
 		cmds = append(cmds, m.restartRuns())
 	case tea.WindowSizeMsg:
@@ -88,6 +115,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		} else {
 			m.outputVP.Width = msg.Width - m.runListStyle.GetWidth() - 2
 			m.outputVP.Height = msg.Height - 8
+		}
+
+		if !m.helpVPReady {
+			m.helpVP = viewport.New(msg.Width-1, msg.Height-7)
+			m.helpVP.SetContent(helpText)
+			m.helpVPReady = true
+		} else {
+			m.helpVP.Width = msg.Width - 1
+			m.helpVP.Height = msg.Height - 7
 		}
 
 	case CmdRanMsg:
@@ -179,6 +215,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = append(cmds, cmd)
 	case outputPane:
 		m.outputVP, cmd = m.outputVP.Update(msg)
+		cmds = append(cmds, cmd)
+	case helpPane:
+		m.helpVP, cmd = m.helpVP.Update(msg)
 		cmds = append(cmds, cmd)
 	}
 
