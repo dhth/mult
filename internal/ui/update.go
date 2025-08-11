@@ -94,9 +94,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.activePane = helpPane
 		}
 	case HideHelpMsg:
-		if m.showHelpIndicator {
-			m.showHelpIndicator = false
-		}
+		m.showHelpIndicator = false
 	case CmdListClearedMsg:
 		cmds = append(cmds, m.restartRuns())
 	case tea.WindowSizeMsg:
