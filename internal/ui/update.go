@@ -62,27 +62,23 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				cmds = append(cmds, m.clearRunList())
 			}
-		case "h", "left":
+		case "h", "left", "l", "right":
 			if m.activePane != outputPane {
 				break
 			}
 
 			selectedIndex := m.runList.Index()
-			if selectedIndex > 0 {
-				m.runList.Select(selectedIndex - 1)
-			}
-			if m.config.FollowResults {
-				m.config.FollowResults = false
-			}
-		case "l", "right":
-			if m.activePane != outputPane {
-				break
+			switch msg.String() {
+			case "h", "left":
+				if selectedIndex > 0 {
+					m.runList.Select(selectedIndex - 1)
+				}
+			case "l", "right":
+				if selectedIndex < len(m.runList.Items())-1 {
+					m.runList.Select(selectedIndex + 1)
+				}
 			}
 
-			selectedIndex := m.runList.Index()
-			if selectedIndex < len(m.runList.Items())-1 {
-				m.runList.Select(selectedIndex + 1)
-			}
 			if m.config.FollowResults {
 				m.config.FollowResults = false
 			}
