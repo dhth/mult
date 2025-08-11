@@ -16,3 +16,5 @@ type CmdRanMsg struct {
 type DelayTimeElapsedMsg struct {
 	iterationNum int
 }
+
+type CmdListClearedMsg struct{}

@@ -16,8 +16,13 @@ func (m Model) View() string {
 	var footer string
 
 	var statusBar string
-	if m.message != "" {
-		statusBar = RightPadTrim(m.message, m.terminalWidth)
+	if m.msg.value != "" {
+		switch m.msg.kind {
+		case userMsgErr:
+			statusBar = userMsgErrStyle.Render(m.msg.value)
+		case userMsgInfo:
+			statusBar = userMsgInfoStyle.Render(m.msg.value)
+		}
 	}
 
 	listView := runListStyle.Render(m.runList.View())

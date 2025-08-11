@@ -34,7 +34,7 @@ func InitialModel(cmd []string, config d.Config) Model {
 
 	m := Model{
 		cmd:              cmd,
-		message:          "hello",
+		msg:              userMsg{},
 		config:           config,
 		lastRunIndex:     -1,
 		resultsCache:     make(map[int]string),

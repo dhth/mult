@@ -23,6 +23,8 @@ const (
 	numErrorsColor         = "#fb4934"
 	modeColor              = "#b8bb26"
 	helpMsgColor           = "#83a598"
+	userMsgInfoColor       = "#8ec07c"
+	userMsgErrColor        = "#fb4934"
 )
 
 var (
@@ -98,4 +100,10 @@ var (
 
 	cmdDurationStyle = lipgloss.NewStyle().
 				Foreground(lipgloss.Color(cmdDurationColor))
+
+	userMsgInfoStyle = lipgloss.NewStyle().
+				Foreground(lipgloss.Color(userMsgInfoColor))
+
+	userMsgErrStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color(userMsgErrColor))
 )
