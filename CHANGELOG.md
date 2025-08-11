@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add "follow mode" (automatically select the latest command run)
+- Allow restarting runs
+- Keymaps for scrolling run list from the output pane
 
 ## [v0.2.0] - Aug 05, 2025
 

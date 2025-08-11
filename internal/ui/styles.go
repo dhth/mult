@@ -22,7 +22,7 @@ const (
 	inactivePaneColor      = "#928374"
 	numErrorsColor         = "#fb4934"
 	modeColor              = "#b8bb26"
-	helpMsgColor           = "#83a598"
+	helpColor              = "#83a598"
 	userMsgInfoColor       = "#8ec07c"
 	userMsgErrColor        = "#fb4934"
 )
@@ -73,7 +73,7 @@ var (
 				Bold(true)
 
 	helpMsgStyle = statusBarElementStyle.
-			Foreground(lipgloss.Color(helpMsgColor))
+			Foreground(lipgloss.Color(helpColor))
 
 	numRunsStyle = statusBarElementStyle.
 			Foreground(lipgloss.Color(cmdScheduledColor))
@@ -106,4 +106,14 @@ var (
 
 	userMsgErrStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color(userMsgErrColor))
+
+	helpVPStyle = lipgloss.NewStyle().
+			PaddingLeft(2).
+			PaddingTop(1).
+			PaddingRight(2).
+			PaddingBottom(1)
+
+	helpVPTitleStyle = baseStyle.
+				Bold(true).
+				Background(lipgloss.Color(helpColor))
 )

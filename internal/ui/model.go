@@ -15,6 +15,7 @@ type Pane uint
 const (
 	cmdRunListPane Pane = iota
 	outputPane
+	helpPane
 )
 
 type userMsgKind uint
@@ -37,14 +38,17 @@ type Model struct {
 	lastRunIndex      int
 	outputVP          viewport.Model
 	outputVPReady     bool
+	helpVP            viewport.Model
+	helpVPReady       bool
 	resultsCache      map[int]string
 	msg               userMsg
 	runListStyle      lipgloss.Style
 	outputTitleStyle  lipgloss.Style
 	terminalHeight    int
 	terminalWidth     int
-	showHelp          bool
+	showHelpIndicator bool
 	activePane        Pane
+	lastPane          Pane
 	firstFetch        bool
 	averageMS         int64
 	totalMS           int64

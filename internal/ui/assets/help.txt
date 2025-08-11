@@ -1,0 +1,29 @@
+mult has 3 views:
+- Command Run List View
+- Output View
+- Help View (this one)
+
+Keyboard Shortcuts
+
+General
+
+  tab                            Switch focus between panes
+  ?                              Show help view
+  q / Esc                        Go back or quit
+  ctrl+c                         Quit immediately
+
+Command Run List View
+
+  j / ↓                          Go to next run
+  k / ↑                          Go to previous run
+  ctrl+r                         Restart all runs
+  ctrl+f                         Toggle follow mode
+
+Output View
+
+  j / ↓                          Scroll output down
+  k / ↑                          Scroll output up
+  l / →                          Go to next run
+  h / ←                          Go to previous run
+  ctrl+r                         Restart all runs
+  ctrl+f                         Toggle follow mode

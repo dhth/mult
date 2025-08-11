@@ -6,10 +6,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var (
-	runListWidth  = 32
-	statusBarHelp = "tab: switch focus; j/k/down/up: scroll output up/down; <ctrl+f>: toggle follow mode"
-)
+var runListWidth = 32
 
 func (m Model) View() string {
 	var content string
@@ -25,17 +22,28 @@ func (m Model) View() string {
 		}
 	}
 
-	listView := runListStyle.Render(m.runList.View())
-	outputView := lipgloss.JoinVertical(lipgloss.Left, "\n"+m.outputTitleStyle.Render("Output")+"\n\n"+m.outputVP.View())
-	content = lipgloss.JoinHorizontal(lipgloss.Top, listView, outputView)
+	switch m.activePane {
+	case helpPane:
+		var helpVP string
+		if !m.helpVPReady {
+			helpVP = "\n  Initializing..."
+		} else {
+			helpVP = helpVPStyle.Render(fmt.Sprintf("%s\n\n%s\n", helpVPTitleStyle.Render("Help"), m.helpVP.View()))
+		}
+		content = helpVP
+	default:
+		listView := runListStyle.Render(m.runList.View())
+		outputView := lipgloss.JoinVertical(lipgloss.Left, "\n"+m.outputTitleStyle.Render("Output")+"\n\n"+m.outputVP.View())
+		content = lipgloss.JoinHorizontal(lipgloss.Top, listView, outputView)
+	}
 
 	footerStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#282828")).
 		Background(lipgloss.Color("#7c6f64"))
 
 	var helpMsg string
-	if m.showHelp {
-		helpMsg = helpMsgStyle.Render(statusBarHelp)
+	if m.showHelpIndicator {
+		helpMsg = helpMsgStyle.Render("Press ? for help")
 	}
 
 	numRunsMsg := numRunsStyle.Render(fmt.Sprintf("%d/%d", m.numRunsFinished, m.config.NumRuns))
