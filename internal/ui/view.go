@@ -6,7 +6,10 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var runListWidth = 32
+var (
+	runListWidth  = 32
+	statusBarHelp = "tab: switch focus; j/k/down/up: scroll output up/down; <ctrl+f>: toggle follow mode"
+)
 
 func (m Model) View() string {
 	var content string
@@ -27,7 +30,7 @@ func (m Model) View() string {
 
 	var helpMsg string
 	if m.showHelp {
-		helpMsg = helpMsgStyle.Render("tab: switch focus; j/k/down/up: scroll output up/down")
+		helpMsg = helpMsgStyle.Render(statusBarHelp)
 	}
 
 	numRunsMsg := numRunsStyle.Render(fmt.Sprintf("%d/%d", m.numRunsFinished, m.config.NumRuns))
@@ -47,13 +50,19 @@ func (m Model) View() string {
 		abandonedMsg = abandonedMsgStyle.Render("abandoned")
 	}
 
-	footerStr := fmt.Sprintf("%s%s%s%s%s%s",
+	var followingMsg string
+	if m.config.FollowResults {
+		followingMsg = followingStyle.Render("[following]")
+	}
+
+	footerStr := fmt.Sprintf("%s%s%s%s%s%s%s",
 		modeStyle.Render("mult"),
 		helpMsg,
 		numRunsMsg,
 		averageTimeMsg,
 		numErrorsMsg,
 		abandonedMsg,
+		followingMsg,
 	)
 	footer = footerStyle.Render(footerStr)
 

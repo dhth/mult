@@ -36,6 +36,7 @@ func InitialModel(cmd []string, config d.Config) Model {
 		cmd:              cmd,
 		message:          "hello",
 		config:           config,
+		lastRunIndex:     -1,
 		resultsCache:     make(map[int]string),
 		runList:          list.New(stackItems, del, runListWidth, 0),
 		outputTitleStyle: outputTitleStyle,

@@ -21,6 +21,7 @@ type Model struct {
 	cmd               []string
 	config            d.Config
 	runList           list.Model
+	lastRunIndex      int
 	outputVP          viewport.Model
 	outputVPReady     bool
 	resultsCache      map[int]string

@@ -37,6 +37,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.outputTitleStyle = m.outputTitleStyle.Background(lipgloss.Color(inactivePaneColor))
 				m.runList.Styles.Title = m.runList.Styles.Title.Background(lipgloss.Color(activePaneColor))
 			}
+		case "ctrl+f":
+			m.config.FollowResults = !m.config.FollowResults
 		}
 	case HideHelpMsg:
 		m.showHelp = false
@@ -67,6 +69,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		run.RunStatus = finished
 		run.TookMS = msg.tookMS
 		cmds = append(cmds, m.runList.SetItem(i, run))
+		if m.config.FollowResults && m.config.Sequential {
+			m.runList.Select(i)
+		}
 
 		if msg.err != nil {
 			errDetails := cmdErrorDetailsStyle.Render(fmt.Sprintf("---\n%s", msg.err.Error()))
@@ -129,11 +134,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = append(cmds, runCmd(m.cmd, msg.iterationNum))
 
 	case CmdRunChosenMsg:
-		resultFromCache, ok := m.resultsCache[msg.runNum]
-		if ok {
-			m.outputVP.SetContent(resultFromCache)
-		} else {
-			m.outputVP.SetContent("")
+		if m.config.FollowResults {
+			m.config.FollowResults = false
 		}
 	}
 
@@ -144,6 +146,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case outputPane:
 		m.outputVP, cmd = m.outputVP.Update(msg)
 		cmds = append(cmds, cmd)
+	}
+
+	runIndex := m.runList.Index()
+	if runIndex != m.lastRunIndex {
+		m.lastRunIndex = runIndex
+		resultFromCache, ok := m.resultsCache[runIndex]
+		if ok {
+			m.outputVP.SetContent(resultFromCache)
+		} else {
+			m.outputVP.SetContent("")
+		}
 	}
 
 	return m, tea.Batch(cmds...)
