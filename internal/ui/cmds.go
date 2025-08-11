@@ -37,7 +37,7 @@ func runCmd(cmd []string, iterationNum int) tea.Cmd {
 			c = exec.Command(cmd[0], cmd[1:]...)
 		}
 
-		c.Env = append(os.Environ(), fmt.Sprintf("MULT_RUN_NUM=%d", iterationNum))
+		c.Env = append(os.Environ(), fmt.Sprintf("MULT_RUN_NUM=%d", iterationNum+1))
 		startTime := time.Now()
 		out, err := c.CombinedOutput()
 		endTime := time.Now()
