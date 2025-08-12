@@ -196,6 +196,6 @@ you want):
 
    ```shell
    tar -xzf mult_A.B.C_linux_amd64.tar.gz
-   ./mult
+   ./mult -h
    # profit!
    ```
