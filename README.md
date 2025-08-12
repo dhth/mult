@@ -135,12 +135,16 @@ mult -s -S -- yourcommand
 
 **Command Run List View**
 
-| Key       | Action             |
-|-----------|--------------------|
-| `j` / `↓` | Go to next run     |
-| `k` / `↑` | Go to previous run |
-| `ctrl+r`  | Restart all runs   |
-| `ctrl+f`  | Toggle follow mode |
+| Key       | Action                              |
+|-----------|-------------------------------------|
+| `j` / `↓` | Go to next run                      |
+| `k` / `↑` | Go to previous run                  |
+| `l` / `→` | Go to next page (if applicable)     |
+| `h` / `←` | Go to previous page (if applicable) |
+| `g`       | Go to start of the list             |
+| `G`       | Go to the end of the list           |
+| `ctrl+r`  | Restart all runs                    |
+| `ctrl+f`  | Toggle follow mode                  |
 
 **Output View**
 
