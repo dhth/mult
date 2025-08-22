@@ -21,7 +21,7 @@ Command Run List View
   g                              Go to start of the list
   G                              Go to the end of the list
   ctrl+r                         Restart all runs
-  ctrl+f                         Toggle follow mode
+  ctrl+f                         Toggle follow mode (in sequential mode)
 
 Output View
 

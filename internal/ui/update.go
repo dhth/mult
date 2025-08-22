@@ -52,6 +52,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.activePane != cmdRunListPane && m.activePane != outputPane {
 				break
 			}
+			if !m.config.Sequential {
+				break
+			}
+
 			m.config.FollowResults = !m.config.FollowResults
 		case "ctrl+r":
 			if m.activePane != cmdRunListPane && m.activePane != outputPane {
