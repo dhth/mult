@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	d "github.com/dhth/mult/internal/domain"
 )
 
 //go:embed assets/help.txt
@@ -123,33 +124,33 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case CmdRanMsg:
 		m.numRunsFinished++
 		i := msg.iterationNum
-		run, ok := m.runList.Items()[i].(command)
+		runItem, ok := m.runList.Items()[i].(cmdRunItem)
 		if !ok {
 			break
 		}
 
-		run.Output = msg.output
-		run.Err = msg.err
-		run.RunStatus = finished
-		run.TookMS = msg.tookMS
-		cmds = append(cmds, m.runList.SetItem(i, run))
+		runItem.Output = msg.output
+		runItem.Err = msg.err
+		runItem.RunStatus = d.Finished
+		runItem.TookMS = msg.tookMS
+		cmds = append(cmds, m.runList.SetItem(i, runItem))
 		if m.config.FollowResults && m.config.Sequential {
 			m.runList.Select(i)
 		}
 
 		if msg.err != nil {
 			errDetails := cmdErrorDetailsStyle.Render(fmt.Sprintf("---\n%s", msg.err.Error()))
-			m.resultsCache[i] = fmt.Sprintf("%s\n%s", run.Output, errDetails)
+			m.resultsCache[i] = fmt.Sprintf("%s\n%s", runItem.Output, errDetails)
 			m.numErrors++
 		} else {
 			m.numSuccessfulRuns++
-			m.resultsCache[i] = run.Output
-			m.totalMS += run.TookMS
+			m.resultsCache[i] = runItem.Output
+			m.totalMS += runItem.TookMS
 			m.averageMS = m.totalMS / int64(m.numSuccessfulRuns)
 		}
 
 		if m.firstFetch {
-			selected, ok := m.runList.SelectedItem().(command)
+			selected, ok := m.runList.SelectedItem().(cmdRunItem)
 			if ok {
 				resultFromCache, ok := m.resultsCache[selected.IterationNum]
 				if ok {
@@ -162,39 +163,39 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if i < m.config.NumRuns-1 && m.config.Sequential {
 			if (m.config.StopOnFirstFailure && msg.err != nil) || (m.config.StopOnFirstSuccess && msg.err == nil) {
 				for j := i + 1; j < m.config.NumRuns; j++ {
-					nextRun, ok := m.runList.Items()[i+1].(command)
+					nextRunItem, ok := m.runList.Items()[j].(cmdRunItem)
 					if ok {
-						nextRun.RunStatus = abandoned
-						cmds = append(cmds, m.runList.SetItem(j, nextRun))
+						nextRunItem.RunStatus = d.Abandoned
+						cmds = append(cmds, m.runList.SetItem(j, nextRunItem))
 					}
 				}
 				m.abandoned = true
 			} else {
 				if m.config.DelayMS == 0 {
-					nextRun, ok := m.runList.Items()[i+1].(command)
+					nextRunItem, ok := m.runList.Items()[i+1].(cmdRunItem)
 					if ok {
-						nextRun.RunStatus = running
-						cmds = append(cmds, m.runList.SetItem(i+1, nextRun))
+						nextRunItem.RunStatus = d.Running
+						cmds = append(cmds, m.runList.SetItem(i+1, nextRunItem))
 						cmds = append(cmds, runCmd(m.cmd, i+1))
 					}
 				} else {
-					nextRun, ok := m.runList.Items()[i+1].(command)
+					nextRunItem, ok := m.runList.Items()[i+1].(cmdRunItem)
 					if ok {
-						nextRun.RunStatus = waiting
-						cmds = append(cmds, m.runList.SetItem(i+1, nextRun))
+						nextRunItem.RunStatus = d.Waiting
+						cmds = append(cmds, m.runList.SetItem(i+1, nextRunItem))
 						cmds = append(cmds, runAfterDelay(time.Millisecond*time.Duration(m.config.DelayMS), i+1))
 					}
 				}
 			}
 		}
 	case DelayTimeElapsedMsg:
-		run, ok := m.runList.Items()[msg.iterationNum].(command)
+		runItem, ok := m.runList.Items()[msg.iterationNum].(cmdRunItem)
 		if !ok {
 			break
 		}
 
-		run.RunStatus = running
-		cmds = append(cmds, m.runList.SetItem(msg.iterationNum, run))
+		runItem.RunStatus = d.Running
+		cmds = append(cmds, m.runList.SetItem(msg.iterationNum, runItem))
 		cmds = append(cmds, runCmd(m.cmd, msg.iterationNum))
 
 	case CmdRunChosenMsg:

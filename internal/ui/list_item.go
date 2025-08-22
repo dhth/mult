@@ -1,39 +1,29 @@
 package ui
 
-import "fmt"
+import (
+	"fmt"
 
-type runStatus uint
-
-const (
-	running runStatus = iota
-	waiting
-	scheduled
-	finished
-	abandoned
+	d "github.com/dhth/mult/internal/domain"
 )
 
-type command struct {
-	IterationNum int
-	Output       string
-	RunStatus    runStatus
-	TookMS       int64
-	Err          error
+type cmdRunItem struct {
+	d.CommandRun
 }
 
-func (c command) Title() string {
+func (c cmdRunItem) Title() string {
 	return cmdRunNumStyle.Render(fmt.Sprintf("run #%d", c.IterationNum+1))
 }
 
-func (c command) Description() string {
+func (c cmdRunItem) Description() string {
 	var runIndicator string
 	switch c.RunStatus {
-	case waiting:
+	case d.Waiting:
 		runIndicator = cmdWaitingStyle.Render("waiting")
-	case scheduled:
+	case d.Scheduled:
 		runIndicator = cmdScheduledStyle.Render("scheduled")
-	case running:
+	case d.Running:
 		runIndicator = cmdRunningStyle.Render("running")
-	case abandoned:
+	case d.Abandoned:
 		runIndicator = cmdAbandonedStyle.Render("abandoned")
 	default:
 		var exitIndicator string
@@ -50,6 +40,10 @@ func (c command) Description() string {
 	return runIndicator
 }
 
-func (c command) FilterValue() string {
+func (c cmdRunItem) FilterValue() string {
 	return fmt.Sprintf("%d", c.IterationNum)
+}
+
+func toListItem(cmdRun d.CommandRun) cmdRunItem {
+	return cmdRunItem{CommandRun: cmdRun}
 }
