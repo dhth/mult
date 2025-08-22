@@ -30,9 +30,9 @@ func newCmdItemDelegate() list.DefaultDelegate {
 				list.DefaultKeyMap().GoToEnd,
 				list.DefaultKeyMap().NextPage,
 				list.DefaultKeyMap().PrevPage):
-				cmdRun, ok := m.SelectedItem().(command)
+				runItem, ok := m.SelectedItem().(cmdRunItem)
 				if ok {
-					return chooseRunEntry(cmdRun.IterationNum)
+					return chooseRunEntry(runItem.IterationNum)
 				}
 			}
 		}

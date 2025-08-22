@@ -10,16 +10,16 @@ func InitialModel(cmd []string, config d.Config) Model {
 	stackItems := make([]list.Item, config.NumRuns)
 
 	for i := range config.NumRuns {
-		var rs runStatus
+		var rs d.RunStatus
 		if i == 0 || !config.Sequential {
-			rs = running
+			rs = d.Running
 		} else {
-			rs = scheduled
+			rs = d.Scheduled
 		}
-		stackItems[i] = command{
+		stackItems[i] = toListItem(d.CommandRun{
 			IterationNum: i,
 			RunStatus:    rs,
-		}
+		})
 	}
 
 	del := newCmdItemDelegate()

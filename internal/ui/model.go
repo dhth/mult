@@ -87,16 +87,16 @@ func (m *Model) clearRunList() tea.Cmd {
 	stackItems := make([]list.Item, numRuns)
 
 	for i := range numRuns {
-		var rs runStatus
+		var rs d.RunStatus
 		if i == 0 || !m.config.Sequential {
-			rs = running
+			rs = d.Running
 		} else {
-			rs = scheduled
+			rs = d.Scheduled
 		}
-		stackItems[i] = command{
+		stackItems[i] = toListItem(d.CommandRun{
 			IterationNum: i,
 			RunStatus:    rs,
-		}
+		})
 	}
 
 	m.resultsCache = make(map[int]string)
