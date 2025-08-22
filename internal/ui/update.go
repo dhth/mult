@@ -129,24 +129,23 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			break
 		}
 
-		run := runItem.CommandRun
-		run.Output = msg.output
-		run.Err = msg.err
-		run.RunStatus = d.Finished
-		run.TookMS = msg.tookMS
-		cmds = append(cmds, m.runList.SetItem(i, toListItem(run)))
+		runItem.Output = msg.output
+		runItem.Err = msg.err
+		runItem.RunStatus = d.Finished
+		runItem.TookMS = msg.tookMS
+		cmds = append(cmds, m.runList.SetItem(i, runItem))
 		if m.config.FollowResults && m.config.Sequential {
 			m.runList.Select(i)
 		}
 
 		if msg.err != nil {
 			errDetails := cmdErrorDetailsStyle.Render(fmt.Sprintf("---\n%s", msg.err.Error()))
-			m.resultsCache[i] = fmt.Sprintf("%s\n%s", run.Output, errDetails)
+			m.resultsCache[i] = fmt.Sprintf("%s\n%s", runItem.Output, errDetails)
 			m.numErrors++
 		} else {
 			m.numSuccessfulRuns++
-			m.resultsCache[i] = run.Output
-			m.totalMS += run.TookMS
+			m.resultsCache[i] = runItem.Output
+			m.totalMS += runItem.TookMS
 			m.averageMS = m.totalMS / int64(m.numSuccessfulRuns)
 		}
 
