@@ -14,7 +14,7 @@ Run a command multiple times and glance at the outputs.
 mult -- command --you=want --to=run
 ```
 
-![Usage](https://tools.dhruvs.space/images/mult/v0-3-0/usage.gif)
+[![usage](https://asciinema.org/a/E06efxcFkA4RSSTI7keeUtFqp.svg)](https://asciinema.org/a/E06efxcFkA4RSSTI7keeUtFqp)
 
 🧰 Use Cases
 ---
@@ -92,11 +92,15 @@ execution.
 mult -s -- yourcommand
 ```
 
+[![sequential-runs](https://asciinema.org/a/1AeDGwgIF7bJ7QcV73Zhgqkb3.svg)](https://asciinema.org/a/1AeDGwgIF7bJ7QcV73Zhgqkb3)
+
 ### Add delay (in milliseconds) between runs
 
 ```bash
 mult -s -d=500 -- yourcommand
 ```
+
+[![add-delay-between-runs](https://asciinema.org/a/vdGk7tf5sXYFZyb77PmN7ciaG.svg)](https://asciinema.org/a/vdGk7tf5sXYFZyb77PmN7ciaG)
 
 ### Stop at first failure
 
@@ -109,6 +113,8 @@ mult -s -F -- yourcommand
 ```bash
 mult -s -S -- yourcommand
 ```
+
+[![stop-on-first-failure-success](https://asciinema.org/a/IeasGG4AVDLlLfTxKqETjskDD.svg)](https://asciinema.org/a/IeasGG4AVDLlLfTxKqETjskDD)
 
 *Note: `-d`, `-F`, `-S` only apply in sequential run mode.*
 
