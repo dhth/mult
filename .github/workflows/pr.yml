@@ -4,7 +4,7 @@ on:
   pull_request:
 
 env:
-  GO_VERSION: '1.24.6'
+  GO_VERSION: '1.25.2'
 
 jobs:
   changes:
@@ -59,7 +59,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
-          version: v2.1
+          version: v2.5
 
   build:
     needs: changes
