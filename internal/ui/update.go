@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/viewport"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	d "github.com/dhth/mult/internal/domain"
 )
 
@@ -22,7 +22,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "ctrl+c":
 			return m, tea.Quit
@@ -109,20 +109,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.runList.SetHeight(msg.Height - h1 - 4)
 
 		if !m.outputVPReady {
-			m.outputVP = viewport.New(msg.Width-m.runListStyle.GetWidth()-2, msg.Height-8)
+			m.outputVP = viewport.New(viewport.WithWidth(msg.Width-m.runListStyle.GetWidth()-2), viewport.WithHeight(msg.Height-8))
 			m.outputVPReady = true
 		} else {
-			m.outputVP.Width = msg.Width - m.runListStyle.GetWidth() - 2
-			m.outputVP.Height = msg.Height - 8
+			m.outputVP.SetWidth(msg.Width - m.runListStyle.GetWidth() - 2)
+			m.outputVP.SetHeight(msg.Height - 8)
 		}
 
 		if !m.helpVPReady {
-			m.helpVP = viewport.New(msg.Width-1, msg.Height-7)
+			m.helpVP = viewport.New(viewport.WithWidth(msg.Width-1), viewport.WithHeight(msg.Height-7))
 			m.helpVP.SetContent(helpText)
 			m.helpVPReady = true
 		} else {
-			m.helpVP.Width = msg.Width - 1
-			m.helpVP.Height = msg.Height - 7
+			m.helpVP.SetWidth(msg.Width - 1)
+			m.helpVP.SetHeight(msg.Height - 7)
 		}
 
 	case CmdRanMsg:

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 	d "github.com/dhth/mult/internal/domain"
 )
 
@@ -20,7 +20,7 @@ func RenderUI(cmd []string, config d.Config) error {
 		defer f.Close()
 	}
 
-	p := tea.NewProgram(InitialModel(cmd, config), tea.WithAltScreen())
+	p := tea.NewProgram(InitialModel(cmd, config))
 	_, err := p.Run()
 
 	return err

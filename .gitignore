@@ -3,4 +3,3 @@ mult
 cosign.key
 cosign.pub
 debug.log
-justfile

@@ -1,10 +1,10 @@
 package ui
 
 import (
-	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/list"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/list"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 func newCmdItemDelegate() list.DefaultDelegate {
@@ -21,7 +21,7 @@ func newCmdItemDelegate() list.DefaultDelegate {
 	d.UpdateFunc = func(msg tea.Msg, m *list.Model) tea.Cmd {
 		//revive:disable:unnecessary-stmt
 		switch msgType := msg.(type) {
-		case tea.KeyMsg:
+		case tea.KeyPressMsg:
 			switch {
 			case key.Matches(msgType,
 				list.DefaultKeyMap().CursorUp,

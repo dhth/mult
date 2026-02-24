@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
+	tea "charm.land/bubbletea/v2"
 )
 
 func chooseRunEntry(runNum int) tea.Cmd {
