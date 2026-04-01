@@ -3,7 +3,7 @@ module github.com/dhth/mult
 go 1.26.1
 
 require (
-	charm.land/bubbles/v2 v2.0.0
+	charm.land/bubbles/v2 v2.1.0
 	charm.land/bubbletea/v2 v2.0.2
 	charm.land/lipgloss/v2 v2.0.2
 	github.com/spf13/cobra v1.10.2
@@ -21,7 +21,7 @@ require (
 	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
-	github.com/mattn/go-runewidth v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.21 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sahilm/fuzzy v0.1.1 // indirect
