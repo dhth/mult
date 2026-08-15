@@ -1,0 +1,25 @@
+name: scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 10 * *'
+
+jobs:
+  virus-total:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          install_args: go goreleaser
+      - name: Build binaries
+        run: mise run release:build
+      - name: List binaries
+        run: |
+          ls -lh ./dist/mult_*/mult
+      - uses: dhth/composite-actions/.github/actions/scan-files@main
+        with:
+          files: './dist/mult_*/mult'
+          vt-api-key: ${{ secrets.VT_API_KEY }}

@@ -1,0 +1,106 @@
+[settings]
+idiomatic_version_file_enable_tools = ["go"]
+task.run_auto_install = false
+
+[tools]
+actionlint = "1.7.12"
+cosign = "2.5.0"
+"go:golang.org/x/vuln/cmd/govulncheck" = "latest"
+gofumpt = "0.11.0"
+golangci-lint = "2.12.2"
+goreleaser = "2.14.1"
+"npm:@kitlangton/terminal-control-darwin-arm64" = { version = "0.6.0", os = ["macos/arm64"] }
+yamlfmt = "0.21.0"
+
+[tools."github:dhth/terminal-control"]
+version = "0.6.0-r1"
+version_prefix = "musl-v"
+os = ["linux/x64"]
+
+[tasks.all]
+alias = "a"
+description = "Format, lint, test, and build"
+run = [
+	{ task = "fmt" },
+	{ task = "lint" },
+	{ task = "test" },
+	{ task = "build" },
+]
+
+[tasks.run]
+alias = "r"
+description = "Run the application"
+run = "go run ."
+
+[tasks.build]
+alias = "b"
+description = "Build the application"
+run = 'go build -ldflags "-w -s" .'
+
+[tasks.fmt]
+alias = "f"
+description = "Format Go source files"
+run = "gofumpt -l -w ."
+
+[tasks.install]
+alias = "i"
+description = "Install the application"
+run = 'go install -ldflags "-w -s" .'
+
+[tasks.lint]
+alias = ["l", "check", "c"]
+description = "Lint the codebase"
+run = "golangci-lint run"
+
+[tasks."lint:actions"]
+alias = ["l:a"]
+description = "Lint GitHub Actions workflows"
+run = "actionlint"
+
+[tasks."lint:yaml"]
+alias = ["l:y"]
+description = "Lint YAML files"
+run = '''
+yamlfmt \
+	-lint \
+	-quiet \
+	-formatter 'retain_line_breaks_single=true' \
+	$(git ls-files '*.yml' '*.yaml')
+'''
+
+[tasks.test]
+alias = "t"
+description = "Run all tests"
+run = "go test ./..."
+
+[tasks.update-snapshots]
+alias = "us"
+description = "Update test snapshots"
+env = { UPDATE_SNAPS = "true" }
+run = "go test -count=1 ./..."
+
+[tasks.upgrade]
+alias = "up"
+description = "Upgrade Go dependencies"
+run = "go get -u ./..."
+
+[tasks.upgradet]
+alias = "upt"
+description = "Upgrade Go test dependencies"
+run = "go get -t -u ./..."
+
+[tasks.vulncheck]
+description = "Check for known vulnerabilities"
+run = "govulncheck ./..."
+
+[tasks."release:check"]
+description = "Validate the GoReleaser configuration"
+run = "goreleaser check"
+
+[tasks."release:build"]
+description = "Build release artifacts without publishing"
+run = "goreleaser build --snapshot"
+
+[tasks.release]
+description = "Create and publish a release"
+run = "goreleaser release --clean"

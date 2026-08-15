@@ -26,8 +26,11 @@ jobs:
             code:
               - "cmd/**"
               - "internal/**"
+              - "tests/**"
               - "**/*.go"
               - "go.*"
+              - "mise.toml"
+              - "mise.lock"
               - ".golangci.yml"
               - "main.go"
               - ".github/actions/**"
@@ -35,9 +38,13 @@ jobs:
             deps:
               - "go.mod"
               - "go.sum"
+              - "mise.toml"
+              - "mise.lock"
               - ".github/workflows/main.yml"
             release:
               - ".goreleaser.yml"
+              - "mise.toml"
+              - "mise.lock"
               - ".github/workflows/main.yml"
             workflows:
               - ".github/workflows/**.yml"
@@ -51,7 +58,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: dhth/composite-actions/.github/actions/lint-go@main
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          install_args: go golangci-lint
+      - name: Lint
+        run: mise run lint
 
   build:
     needs: changes
@@ -62,12 +74,28 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - name: Set up mise
+        uses: jdx/mise-action@v4
         with:
-          go-version-file: 'go.mod'
-      - name: go build
-        run: go build -v ./...
+          install_args: go
+      - name: Build
+        run: mise run build
+
+  test:
+    needs: changes
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          install_args: go
+      - name: Test
+        run: mise run test
 
   lint-yaml:
     needs: changes
@@ -76,7 +104,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - uses: dhth/composite-actions/.github/actions/lint-yaml@main
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          install_args: yamlfmt
+      - name: Lint YAML
+        run: mise run lint:yaml
 
   lint-workflows:
     needs: changes
@@ -85,7 +118,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - uses: dhth/composite-actions/.github/actions/lint-actions@main
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          install_args: actionlint
+      - name: Lint workflows
+        run: mise run lint:actions
 
   release-check:
     needs: changes
@@ -93,15 +131,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - name: Set up mise
+        uses: jdx/mise-action@v4
         with:
-          go-version-file: 'go.mod'
+          install_args: go goreleaser
       - name: Release check
-        uses: goreleaser/goreleaser-action@v7
-        with:
-          version: 'v2.9.0'
-          args: check
+        run: mise run release:check
 
   vulncheck:
     needs: changes
@@ -109,11 +144,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - name: Set up mise
+        uses: jdx/mise-action@v4
         with:
-          go-version-file: 'go.mod'
-      - name: install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
-      - name: govulncheck
-        run: govulncheck ./...
+          install_args: go go:golang.org/x/vuln/cmd/govulncheck
+      - name: Vulnerability check
+        run: mise run vulncheck

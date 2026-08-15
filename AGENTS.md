@@ -8,17 +8,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Common Commands
 
-All commands use `just` (task runner):
-
-```bash
-just build      # go build -ldflags='-s -w' .
-just run        # go run .
-just install    # go install -ldflags='-s -w' .
-just lint       # golangci-lint run
-just fmt        # gofumpt -w .
-```
-
-Note: always use `just` to run commands.
+Read `mise.toml` for available development tasks and tools.
 
 ## Architecture
 
