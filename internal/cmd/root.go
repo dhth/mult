@@ -3,13 +3,18 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	d "github.com/dhth/mult/internal/domain"
+	"github.com/dhth/mult/internal/executor"
 	"github.com/dhth/mult/internal/ui"
 	"github.com/spf13/cobra"
 )
 
-const maxNumRuns = 1000
+const (
+	maxNumRuns       = 1000
+	processWaitDelay = time.Second
+)
 
 var (
 	errInvalidNumRunsRequested = errors.New("invalid number of runs requested")
@@ -62,7 +67,7 @@ func NewRootCommand() *cobra.Command {
 
 			return nil
 		},
-		RunE: func(_ *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var nRuns int
 			if interactive {
 				fmt.Printf("number of runs?\n")
@@ -87,7 +92,11 @@ func NewRootCommand() *cobra.Command {
 				StopOnFirstSuccess: stopOnFirstSuccess,
 			}
 
-			return ui.RenderUI(args, config)
+			ctx := cmd.Context()
+			runner := executor.New(ctx, processWaitDelay)
+			defer runner.Shutdown()
+
+			return ui.RenderUI(ctx, args, config, runner)
 		},
 	}
 

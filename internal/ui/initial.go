@@ -4,9 +4,10 @@ import (
 	"charm.land/bubbles/v2/list"
 	"charm.land/lipgloss/v2"
 	d "github.com/dhth/mult/internal/domain"
+	"github.com/dhth/mult/internal/executor"
 )
 
-func InitialModel(cmd []string, config d.Config) Model {
+func InitialModel(cmd []string, config d.Config, runner *executor.Runner) Model {
 	stackItems := make([]list.Item, config.NumRuns)
 
 	for i := range config.NumRuns {
@@ -29,6 +30,7 @@ func InitialModel(cmd []string, config d.Config) Model {
 
 	m := Model{
 		cmd:               cmd,
+		runner:            runner,
 		msg:               userMsg{},
 		config:            config,
 		lastRunIndex:      -1,
