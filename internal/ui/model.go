@@ -8,6 +8,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	d "github.com/dhth/mult/internal/domain"
+	"github.com/dhth/mult/internal/executor"
 )
 
 type Pane uint
@@ -33,6 +34,7 @@ type userMsg struct {
 
 type Model struct {
 	cmd               []string
+	runner            *executor.Runner
 	config            d.Config
 	runList           list.Model
 	lastRunIndex      int
@@ -61,14 +63,14 @@ type Model struct {
 func (m Model) Init() tea.Cmd {
 	var cmds []tea.Cmd
 	cmds = append(cmds, hideHelp(time.Second*30))
-	cmds = append(cmds, runCmd(m.cmd, 0))
+	cmds = append(cmds, runCmd(m.runner, m.cmd, 0))
 
 	if m.config.Sequential {
 		return tea.Batch(cmds...)
 	}
 
 	for i := 1; i < m.config.NumRuns; i++ {
-		cmds = append(cmds, runCmd(m.cmd, i))
+		cmds = append(cmds, runCmd(m.runner, m.cmd, i))
 	}
 
 	return tea.Batch(cmds...)
@@ -115,12 +117,12 @@ func (m *Model) clearRunList() tea.Cmd {
 
 func (m Model) restartRuns() tea.Cmd {
 	if m.config.Sequential {
-		return runCmd(m.cmd, 0)
+		return runCmd(m.runner, m.cmd, 0)
 	}
 
 	var cmds []tea.Cmd
 	for i := 0; i < m.config.NumRuns; i++ {
-		cmds = append(cmds, runCmd(m.cmd, i))
+		cmds = append(cmds, runCmd(m.runner, m.cmd, i))
 	}
 
 	return tea.Batch(cmds...)

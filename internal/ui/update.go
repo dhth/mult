@@ -180,7 +180,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					if ok {
 						nextRunItem.RunStatus = d.Running
 						cmds = append(cmds, m.runList.SetItem(i+1, nextRunItem))
-						cmds = append(cmds, runCmd(m.cmd, i+1))
+						cmds = append(cmds, runCmd(m.runner, m.cmd, i+1))
 					}
 				} else {
 					nextRunItem, ok := m.runList.Items()[i+1].(cmdRunItem)
@@ -200,7 +200,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		runItem.RunStatus = d.Running
 		cmds = append(cmds, m.runList.SetItem(msg.iterationNum, runItem))
-		cmds = append(cmds, runCmd(m.cmd, msg.iterationNum))
+		cmds = append(cmds, runCmd(m.runner, m.cmd, msg.iterationNum))
 
 	case CmdRunChosenMsg:
 		if m.config.FollowResults {

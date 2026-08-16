@@ -3,10 +3,10 @@ package ui
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"time"
 
 	tea "charm.land/bubbletea/v2"
+	"github.com/dhth/mult/internal/executor"
 )
 
 func chooseRunEntry(runNum int) tea.Cmd {
@@ -27,19 +27,11 @@ func runAfterDelay(interval time.Duration, iterationNum int) tea.Cmd {
 	})
 }
 
-func runCmd(cmd []string, iterationNum int) tea.Cmd {
+func runCmd(runner *executor.Runner, cmd []string, iterationNum int) tea.Cmd {
 	return func() tea.Msg {
-		var c *exec.Cmd
-
-		if len(cmd) == 1 {
-			c = exec.Command(cmd[0])
-		} else {
-			c = exec.Command(cmd[0], cmd[1:]...)
-		}
-
-		c.Env = append(os.Environ(), fmt.Sprintf("MULT_RUN_NUM=%d", iterationNum+1))
+		env := append(os.Environ(), fmt.Sprintf("MULT_RUN_NUM=%d", iterationNum+1))
 		startTime := time.Now()
-		out, err := c.CombinedOutput()
+		out, err := runner.Run(cmd, env)
 		endTime := time.Now()
 		return CmdRanMsg{
 			iterationNum: iterationNum,
