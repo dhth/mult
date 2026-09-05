@@ -6,7 +6,6 @@ release:
 before:
   hooks:
     - go mod tidy
-    - go generate ./...
 
 builds:
   - env:
@@ -14,30 +13,19 @@ builds:
     goos:
       - linux
       - darwin
-      - windows
+    goarch:
+      - amd64
+      - arm64
 
 signs:
   - cmd: cosign
-    signature: "${artifact}.sig"
-    certificate: "${artifact}.pem"
+    signature: "${artifact}.sigstore.json"
     args:
       - "sign-blob"
-      - "--oidc-issuer=https://token.actions.githubusercontent.com"
-      - "--output-certificate=${certificate}"
-      - "--output-signature=${signature}"
+      - "--bundle=${signature}"
       - "${artifact}"
       - "--yes"
     artifacts: checksum
-
-brews:
-  - name: mult
-    repository:
-      owner: dhth
-      name: homebrew-tap
-    directory: Formula
-    license: MIT
-    homepage: "https://github.com/dhth/mult"
-    description: "Run a command multiple times and glance at the outputs"
 
 changelog:
   sort: asc
