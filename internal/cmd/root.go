@@ -40,8 +40,8 @@ func NewRootCommand() *cobra.Command {
 
 	rootCmd := &cobra.Command{
 		Use:          "mult [flags] -- <command>",
-		Short:        "Run a command multiple times and glance the outputs",
-		Example:      `mult -s -n 10 -d 1000 -- curl -sif -m 5 'https://some.url/that?fails=sometimes'`,
+		Short:        "Run a command multiple times and glance at the outputs",
+		Example:      `mult -s -n 10 -d 1000 -- curl -sSif 'https://flaky.service.example'`,
 		SilenceUsage: true,
 		Args:         cobra.MinimumNArgs(1),
 		PreRunE: func(_ *cobra.Command, _ []string) error {
