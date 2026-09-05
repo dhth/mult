@@ -68,7 +68,7 @@ mult -- sh -c 'curl -sS https://example.com | wc -c'
 
 Each invocation receives a 1-indexed `MULT_RUN_NUM` environment variable.
 
-⚡️ Common workflows
+🎛️ Execution Options
 ---
 
 ### Choose the number of runs
