@@ -172,7 +172,10 @@ url_api = "https://api.github.com/repos/mvdan/gofumpt/releases/assets/491232806"
 [[tools.golangci-lint]]
 version = "2.15.0"
 backend = "aqua:golangci/golangci-lint"
-specifiers = ["2.15.0"]
+specifiers = [
+    "2.15.0",
+    "latest",
+]
 
 [tools.golangci-lint."platforms.linux-arm64"]
 checksum = "sha256:b4d8f17068b35ee6060cc2f69a16fb48740d706fbba81661c318649c114a6998"
